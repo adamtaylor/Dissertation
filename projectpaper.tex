@@ -30,6 +30,7 @@ web application security, sql injection, cross site scripting, xss, brute force,
 
 \section{Introduction}
 The aim of the project is twofold: firstly, the creation and evaluation of different attack algorithms to better detect security vulnerabilities and secondly to develop a tool, using the algorithms created, to aid in the automated detection of security vulnerabilities in websites and web applications.
+
 The purpose of the tool is to help security researchers and website owners to identify areas of their websites and web applications that are vulnerable to particular attacks so that they can mitigate the problem(s).
 
 It is prohibitively expensive to perform a manual vulnerability analysis of a web application, however, an automated tool can rapidly analyse a web application using several different attack methodologies much faster than a human.
@@ -66,7 +67,7 @@ Input filtering research has been undertaken by developing intermediary proxies 
 
 Liu et al. developed  a proxy-tool, called SQLProb, to prevent SQLi attacks.  SQLProb sits between the front-end web servers and the back-end databases and uses genetic algorithms to dynamically detect SQLi attacks and block them from reaching the databases. [11]
 
-SQLProb works in a similar manner to a web application firewall (WAF) and is quite a useful additional layer of security for a web application.  There are a number of other open-source WAFs such as: mod_security for the Apache web server [14] and WebKnight for the IIS web server. [1]  There are also many commercial WAFs available.
+SQLProb works in a similar manner to a web application firewall (WAF) and is quite a useful additional layer of security for a web application.  There are a number of other open-source WAFs such as: mod\_security for the Apache web server [14] and WebKnight for the IIS web server. [1]  There are also many commercial WAFs available.
 
 Kirda et al. developed a proxy tool - Noxes - for end-users to sit between  web applications and the users’ browser to mitigate the effect of XSS vulnerabilities on end-users.  Noxes can be thought of as a personal web firewall for end-users. [10] Noxes is similar to the FireFox plugin NoScript [17] and suffers the same limitations in that it is extremely invasive to have to block or allow every single request from every new URI.  Noxes plays no role in discovering vulnerabilities in web applications, it is purely for protecting end users.
 
@@ -87,25 +88,34 @@ Nessus is a similar tool to Nikito and again can find pre-defined vulnerabilitie
 
 Nikto and Nessus are good at finding specific exploits that have already been exposed, for example a specific SQLi vulnerability in a specific version of an open source blogging platform but neither are capable of automatically detecting XSS or SQLi vulnerabilities in general.
 
-\subsection{Figures and Tables}
-In general, figures and tables should not appear before they are cited.  Place figure captions below the figures; place table titles above the tables.  If your figure has two parts, for example, include the labels ``(a)'' and ``(b)'' as part of the artwork.  Please verify that figures and tables you mention in the text actually exist.  make sure that all tables and figures are numbered as shown in Table \ref{units} and Figure 1.
-%sort out your own preferred means of inserting figures
+\subsection{Summary}
+As can be seen from the literature the current emphasis of academic research into web application vulnerability detection centres around static analysis of web application code bases.
 
-\begin{table}[htb]
-\centering
-\caption{UNITS FOR MAGNETIC PROPERTIES}
-\vspace*{6pt}
-\label{units}
-\begin{tabular}{ccc}\hline\hline
-Symbol & Quantity & Conversion from Gaussian \\ \hline
-\end{tabular}
-\end{table}
+This is impractical because web applications can be written in many different languages, using many different frameworks whereas the literature survey uncovers only PHP static analysis tools.  Furthermore, the literature clearly states that these tools are incomplete due to the dynamic nature of the PHP language and the ability to dynamically include code at run-time.
 
-\subsection{References}
+On the other hand, tools based on the idea of black box vulnerability scanning can be used on web applications implemented in any language because they pay no attention to the source code of the application.
 
-The list of cited references should appear at the end of the report, ordered alphabetically by the surnames of the first authors.  References cited in the main text should use Harvard (author, date) format.  When citing a section in a book, please give the relevant page numbers, as in \cite[p293]{budgen}.  When citing, where there are either one or two authors, use the names, but if there are more than two, give the first one and use ``et al.'' as in  , except where this would be ambiguous, in which case use all author names.
+Consequently, the research and development of a black box, automated vulnerability scanning tool appears to be the best direction to take to ensure maximum web application coverage.  It is hoped that this ability to analyse web applications written in any language will be a large improvement over other static analysis tools.
 
-You need to give all authors' names in each reference.  Do not use ``et al.'' unless there are more than five authors.  Papers that have not been published should be cited as ``unpublished'' \cite{euther}.  Papers that have been submitted or accepted for publication should be cited as ``submitted for publication'' as in \cite{futher} .  You can also cite using just the year when the author's name appears in the text, as in ``but according to Futher \citeyear{futher}, we \dots''.  Where an authors has more than one publication in a year, add `a', `b' etc. after the year.
+% \subsection{Figures and Tables}
+% In general, figures and tables should not appear before they are cited.  Place figure captions below the figures; place table titles above the tables.  If your figure has two parts, for example, include the labels ``(a)'' and ``(b)'' as part of the artwork.  Please verify that figures and tables you mention in the text actually exist.  make sure that all tables and figures are numbered as shown in Table \ref{units} and Figure 1.
+% %sort out your own preferred means of inserting figures
+% 
+% \begin{table}[htb]
+% \centering
+% \caption{UNITS FOR MAGNETIC PROPERTIES}
+% \vspace*{6pt}
+% \label{units}
+% \begin{tabular}{ccc}\hline\hline
+% Symbol & Quantity & Conversion from Gaussian \\ \hline
+% \end{tabular}
+% \end{table}
+% 
+% \subsection{References}
+% 
+% The list of cited references should appear at the end of the report, ordered alphabetically by the surnames of the first authors.  References cited in the main text should use Harvard (author, date) format.  When citing a section in a book, please give the relevant page numbers, as in \cite[p293]{budgen}.  When citing, where there are either one or two authors, use the names, but if there are more than two, give the first one and use ``et al.'' as in  , except where this would be ambiguous, in which case use all author names.
+% 
+% You need to give all authors' names in each reference.  Do not use ``et al.'' unless there are more than five authors.  Papers that have not been published should be cited as ``unpublished'' \cite{euther}.  Papers that have been submitted or accepted for publication should be cited as ``submitted for publication'' as in \cite{futher} .  You can also cite using just the year when the author's name appears in the text, as in ``but according to Futher \citeyear{futher}, we \dots''.  Where an authors has more than one publication in a year, add `a', `b' etc. after the year.
 
 \section{Solution}
 
