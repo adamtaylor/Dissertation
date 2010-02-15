@@ -47,11 +47,45 @@ SQL injection attacks revolve around the attacker "trying to exploit the data pr
 SQL injection attacks “allow attackers to create, read, update, or delete any arbitrary data available to the application. In the worst case scenario, these flaws allow an attacker to completely compromise the application and the underlying systems, even bypassing deeply nested firewalled environments.” [18] 
 
 \section{Related Work}
-This section presents a survey of existing work on the problems that this project addresses.  it should be between 2 to 4 pages in length.  The rest of this section shows the formats of subsections as well as some general formatting information for tables, figures, references and equations.
+There are a number of different approaches to vulnerability discovery and prevention.  Some of the discovery work involves static analysis of source code (white box) and some of the prevention work involves input filtering techniques that can be applied to web applications.
+Much of the automated vulnerability discovery work has been done by commercial companies, however, there are some free and/or open source implementations.
 
-\subsection{Main Text}
+\subsection{Static Analysis}
+Static analysis is a white box technique used to analyse source code for vulnerabilities.  The main limitation of static analysis tools is that they have to be rewritten for every different programming language and/or framework a web application can be written in, and so far, most of the work seems to have focussed only on PHP.  They also struggle to analyse dynamically included content.
 
-The font used for the main text should be Times New Roman (Times) and the font size should be 12.  The first line of all paragraphs should be indented by 0.25in, except for the first paragraph of each section, subsection, subsubsection etc. (the paragraph immediately after the header) where no indentation is needed.
+Wasserman and Su worked on static analysis to detect XSS vulnerabilities using a mixture of tainted information flow and  string analysis and were able to provide effective checking algorithms. [22]
+
+Wasserman and Su also worked on a static analysis tool to detect SQLi vulnerabilities.  They constructed a grammar based algorithm which tracks the effects of string operations and checks query construction to see whether users can directly or indirectly influence the query construction.   They then check if the users’ input is sufficiently  isolated from the query construction that it avoids SQLi vulnerabilities. [23]
+
+Jovanovic, Kruegel and  Kirda created an open source tool - Pixy - for static analysis of PHP applications to detect XSS vulnerabilities.  The tool used a “flow sensitive, interprocedural, and context sensitive analysis for PHP” to detect vulnerabilities. [8]  Pixy is hampered by its inability to scan included PHP files, leading to the authors admitting a number of false-positives being returned by the tool.  Also Pixy does not deal with the object-orientated features of PHP, instead they assume that object member variables are safe, which may not be the case.
+
+Huang et al. created a “lattice-based static analysis algorithm, derived from type systems and typestate”.  They also created a tool - WebSSARI - to analyse PHP source code for XSS and SQLi vulnerabilities. [5]
+
+\subsection{Input Filtering}
+Input filtering research has been undertaken by developing intermediary proxies that can filter out data before it reaches, for example, a user or a database.
+
+Liu et al. developed  a proxy-tool, called SQLProb, to prevent SQLi attacks.  SQLProb sits between the front-end web servers and the back-end databases and uses genetic algorithms to dynamically detect SQLi attacks and block them from reaching the databases. [11]
+
+SQLProb works in a similar manner to a web application firewall (WAF) and is quite a useful additional layer of security for a web application.  There are a number of other open-source WAFs such as: mod_security for the Apache web server [14] and WebKnight for the IIS web server. [1]  There are also many commercial WAFs available.
+
+Kirda et al. developed a proxy tool - Noxes - for end-users to sit between  web applications and the users’ browser to mitigate the effect of XSS vulnerabilities on end-users.  Noxes can be thought of as a personal web firewall for end-users. [10] Noxes is similar to the FireFox plugin NoScript [17] and suffers the same limitations in that it is extremely invasive to have to block or allow every single request from every new URI.  Noxes plays no role in discovering vulnerabilities in web applications, it is purely for protecting end users.
+
+\subsection{Automated Black Box Vulnerability Discovery}
+Automated black box vulnerability discovery tools look at a web application from a [malicious] user’s perspective, i.e. there is no source code analysis involved, and only look at the front-end of the web application.  Much of the research and developed tools have been undertaken by commercial organisations.
+
+WhiteHatSecurity have a commercial scanning tool named Sentinal [24], HP have WebInspect, a commercial scanning tool [6] and IBM have the Rational AppScan suite of commercial scanning tools [7]. 
+
+An open-source automated tool was prototyped by the Secure Systems Lab at the Technical University of Vienna - SecuBat, consisting of a multi-threaded crawling, attack and analysis components.   
+
+By crawling 25,064 pages they were able to ascertain that 6.63\% were vulnerable to SQL Injection attacks and that 5.14% were vulnerable to XSS attacks. [9]
+
+Other semi-automated web application scanning tools include CAL9000 [13] a browser based web application security toolkit developed by OWASP to improve certain areas of web application testing procedures. [2]
+
+Nikto is another tool which automatically looks for pre-defined vulnerabilities in specific web applications, including XSS and SQL Injection but is unable to automatically detect unknown vulnerabilities or to look for general classes of vulnerabilities. [16] 
+
+Nessus is a similar tool to Nikito and again can find pre-defined vulnerabilities but not general classes of vulnerabilities. [15]
+
+Nikto and Nessus are good at finding specific exploits that have already been exposed, for example a specific SQLi vulnerability in a specific version of an open source blogging platform but neither are capable of automatically detecting XSS or SQLi vulnerabilities in general.
 
 \subsection{Figures and Tables}
 In general, figures and tables should not appear before they are cited.  Place figure captions below the figures; place table titles above the tables.  If your figure has two parts, for example, include the labels ``(a)'' and ``(b)'' as part of the artwork.  Please verify that figures and tables you mention in the text actually exist.  make sure that all tables and figures are numbered as shown in Table \ref{units} and Figure 1.
@@ -75,10 +109,50 @@ You need to give all authors' names in each reference.  Do not use ``et al.'' un
 
 \section{Solution}
 
-This section presents the solutions to the problems in detail.  The design and implementation details should all be placed in this section.  You may create a number of subsections, each focussing on one issue.  
+\subsection{Architecture and Design}
+The following component diagram provides an architectural overview of the proposed solution: Project Norris.
 
-This section should be between 4 to 7 pages in length.
+%insert picture/figure
 
+Project Norris is a web-based application that allows a user to input a URL of a website, and then after crawling, parsing, and attacking the website, displays a report to the user of any security vulnerabilities found in the website by Project Norris.
+
+The design of Project Norris has been broken down into a number of core components.  The user interface of Project Norris is handled by an MVC-based web application.  There are then two main back-end components which do the heavy processing for the application.  These are the Attacker component and the Crawler component.
+
+The Web GUI interacts with the back-end components by placing jobs on another component, the Queue.
+The Attacker and Crawler are further broken down into two components each, one being a worker script which is continuously run that checks for new jobs on the Queue and the other component being the code that is run by the script when a job is found.
+
+Many of the components also rely on another component, the Database. This is to allow data to be stored persistently rather than only in-memory.
+
+The Queue component relies heavily on the Database because when a job is added to the Queue it is actually inserted into the Database.  Consequently when the two worker scripts are asking the Queue if there are any available jobs the Queue actually just queries the database.
+
+The reason to separate the back-end from the front-end of the web application is to deal with the issue of cohesion and coupling, and performance and scalability. 
+
+\subsection{Algorithms}
+There are two vulnerability detection algorithms in Project Norris.  Both are fairly primitive and follow a similar work flow:
+
+For a given form location: send malicious data, analyse the server response or the HTTP Response Body of the generated page to ascertain whether the attack was successful.
+
+The difference between the two algorithms is the method of generating the malicious data to send.
+
+\subsubsection{Static Brute Forcing}
+Static Brute Forcing will take a list of known attack vectors, and permeate through the list until one succeeds or none of the attacks succeed.
+
+The list of attack vectors will be generated from the XSS Cheat Sheet [3].
+
+The pseudo-code for the algorithm is along the following lines:
+
+%insert pseudo-code
+
+This algorithm is primarily used for detecting XSS vulnerabilities but an even simpler version that inputs only one single-quote - ‘ - will be used to detect SQLi vulnerabilities.
+
+\subsubsection{Fuzzy Brute Forcing}
+Fuzzy Brute Forcing dynamically generates potentially malicious input by generating a large amount of random data.
+
+The pseudo-code for the algorithm is along the following lines:
+
+%insert pseudo-code
+
+This algorithm will be used to look at a different set of vulnerabilities: buffer overflow vulnerabilities and directory traversal vulnerabilities.
 \section{Results}
 
 this section presents the results of the solutions.  It should include information on experimental settings.  The results should demonstrate the claimed benefits/disadvantages of the proposed solutions.
@@ -91,8 +165,14 @@ This section should between 1 to 2 pages in length.
 
 \section{Conclusions}
 
-This section summarises the main points of this paper.  Do not replicate the abstract as the conclusion.  A conclusion might elaborate on the importance of the work or suggest applications and extensions.  This section should be no more than 1 page in length.
+Current web application vulnerability detection techniques mostly involve static code analysis and, generally, this is limited to applications written in the PHP language.
 
+Norris can be used to find vulnerabilities in web applications written in any language; it is a black box vulnerability scanner. 
+
+Due to the designed architecture, Norris reports vulnerabilities as soon as it finds them, meaning it can be effectively used with web applications of any size.
+
+It is an effective aide in the hunt for web application vulnerabilities and can crawl, parse and attack a website far quicker than a manual scan can.
+G
 The page lengths given for each section are indicative and will vary from project to project but should not exceed the upper limit.  A summary is shown in Table \ref{summary}.
 
 \begin{table}[htb]
