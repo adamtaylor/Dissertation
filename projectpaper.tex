@@ -2,6 +2,8 @@
 \usepackage{times}
 \usepackage{durhampaper}
 \usepackage{harvard}
+\usepackage{algorithmic}
+\usepackage{listings} 
 
 \citationmode{abbr}
 \bibliographystyle{agsm}
@@ -29,9 +31,9 @@ web application security, sql injection, cross site scripting, xss, brute force,
 \end{keywords}
 
 \section{Introduction}
-The aim of the project is twofold: firstly, the creation and evaluation of different attack algorithms to better detect security vulnerabilities and secondly to develop a tool, using the algorithms created, to aid in the automated detection of security vulnerabilities in websites and web applications.
+The aim of the project is to create and analyse web application vulnerability detection algorithms.  To support the evaluation and analysis of the algorithms, a proof-of-concept web-based tool will be developed that utilises the algorithms to detected vulnerabilities in web applications.
 
-The purpose of the tool is to help security researchers and website owners to identify areas of their websites and web applications that are vulnerable to particular attacks so that they can mitigate the problem(s).
+Hypothetically, if the tool were fully complete, the purpose of the tool would be to help security researchers and website owners to identify areas of their websites and web applications that are vulnerable to particular attacks so that they can mitigate the problem(s).
 
 It is prohibitively expensive to perform a manual vulnerability analysis of a web application, however, an automated tool can rapidly analyse a web application using several different attack methodologies much faster than a human.
 
@@ -78,7 +80,7 @@ WhiteHatSecurity have a commercial scanning tool named Sentinal [24], HP have We
 
 An open-source automated tool was prototyped by the Secure Systems Lab at the Technical University of Vienna - SecuBat, consisting of a multi-threaded crawling, attack and analysis components.   
 
-By crawling 25,064 pages they were able to ascertain that 6.63\% were vulnerable to SQL Injection attacks and that 5.14% were vulnerable to XSS attacks. [9]
+By crawling 25,064 pages they were able to ascertain that 6.63\% were vulnerable to SQL Injection attacks and that 5.14\% were vulnerable to XSS attacks. [9]
 
 Other semi-automated web application scanning tools include CAL9000 [13] a browser based web application security toolkit developed by OWASP to improve certain areas of web application testing procedures. [2]
 
@@ -120,6 +122,8 @@ Consequently, the research and development of a black box, automated vulnerabili
 \section{Solution}
 
 \subsection{Architecture and Design}
+
+\subsubsection{Overview}
 The following component diagram provides an architectural overview of the proposed solution: Project Norris.
 
 %insert picture/figure
@@ -137,6 +141,89 @@ The Queue component relies heavily on the Database because when a job is added t
 
 The reason to separate the back-end from the front-end of the web application is to deal with the issue of cohesion and coupling, and performance and scalability. 
 
+\subsubsection{Web GUI}
+The Web GUI, or the front-end of the Project Norris web application, is designed using the MVC architectural pattern.
+
+The various different views of the Web GUI are displayed to the users by the controllers retrieving any required data from any relevant models and then loading the relevant view and passing the data.
+
+URLs map to controllers and methods in controllers in the following manner:
+
+http://baseurl.com/controller/method/param
+
+So http://baseurl.com/websites/view/1 would map to the controller Websites and the method view() passing in an ID of 1.  The page rendered would be dependent on the template loaded by the view() method.
+
+Views are simply template files, possibly with place holders for data and simple logic for dynamic code, rendered inside a global template file, with data being passed in via controllers.
+
+\subsubsection{Queue}
+The Queue is simply a FIFO, database-backed job allocation system.  It works in the following way:
+
+A job is inserted into the Queue (and hence the database) containing, among other things, a reference to the function of work this particular job is associated with and any arguments the job requires.
+
+For example, to add a new website to be crawled, a job is added to the queue containing a reference to the fact that it is a crawling job and the arguments passed are the url of the website.
+
+Worker scripts are started, and left continuously running, that check the queue at set intervals looking for work they can perform.  If they find any work, they dequeue the job and then using the module with the actually job functionality implemented they perform the task and then go back to looking at the queue until another job appears which they can perform.
+
+The following activity diagram represents this process:
+
+%insert activity diagram
+
+\subsubsection{Database}
+The Database is an integral component in allowing persistent storage of data and is crucial to the function of the Queue. 
+
+The models in the Web GUI are backed by tables in the database, with an ORM layer between, allowing objects in the Web GUI to be persistently stored beyond one HTTP request.
+
+\subsubsection{Crawler/Parser}
+The Crawler receives a URL of a website that requires crawling and parsing, and then creates it’s own queue of URLs that need crawling.  
+
+It dequeues one URL at a time and then requests the content of that page and looks for all links that do not leave the base url and that it hasn’t already seen and adds them to its queue.
+
+The Crawler’s queue is an array of hashes of the form { url => count }.  This way it can check if it has already seen a URL by checking if url{‘count’}++ == TRUE.  Everytime it finds a URL it either inserts 
+
+It also parses the page looking for any forms and if it finds them it adds them to the Queue for the Attacker.
+
+The following activity diagram shows how the crawler works:
+
+%insert activity diagram
+
+\subsubsection{Attacker}
+The attacker receives a form object and a url to attack.  It inserts the location of the form into the Database as a PointOfInterest.  
+
+It then proceeds to attack the form, looking for Cross Site Scripting and SQL Injection vulnerabilities, by passing in data generated by two algorithms described in section 3.5.  It analyses the server response, either looking for HTTP Repsonse Codes indicating errors or by looking through the Response Body for injected code.
+
+If any vulnerabilities are found they are inserted into the database so that reports can be generated by the Web GUI.
+
+\subsubsection{Workflow}
+The workflow  between the various components is demonstrated in the following sequence diagram:
+
+%insert sequence diagram
+
+Time progresses down the dashed lines.
+
+When a user first visits Project Norris in a web browser, they are presented with an opportunity to input a URL to scan.  If they do this the Web GUI then places the URL onto the Queue.
+
+There are two worker scripts, one for the Crawler and one for the Attacker, which are continually checking the Queue for jobs.
+
+As soon as the Crawler sees that there is a job available (i.e. the URL just placed onto the Queue by the Web GUI) a cycle kicks in where the Crawler takes the URL and crawls the whole site finding every page on the domain.  It maintains it’s own queue of the URLs on the domain, to ensure it only looks processes new URLs.
+
+When it find it requests each page, as well as finding all the links, if there are any forms on the page it inserts this as a job in the Queue for the Attacker.
+
+When it has finished crawling and parsing the whole website it goes back to watching the Queue for new jobs.
+
+The attacker takes a form off the Queue and then proceeds to attack the form and analyse the response from the web server.  Should a vulnerability be detected, it is then inserted into the database for the Web GUI to generate reports to the user.
+
+The user is then able to generate reports in the Web GUI, which are created using the data in the database collected by the Attacker.
+
+\subsubsection{Data Flow}
+Data flows through Project Norris in the following way:
+
+- A URL is inserted into the Queue and a Website object is created and stored in the database
+- The Crawler dequeues the URL and proceeds to crawl and parse the whole domain.  Any Forms it finds are inserted into the Queue.
+- The Attacker dequeues any Forms in the Queue and proceeds to attack the form.  The Forms themselves are inserted into the database by creating PointOfInterest objects and any successful attacks are stored as Vulnerability objects.  
+
+So one Website can have many PointsOfInterest, and one PointOfInterest can have many Vulnerabilities.
+
+The following diagram shows the data flow through the system:
+
 \subsection{Algorithms}
 There are two vulnerability detection algorithms in Project Norris.  Both are fairly primitive and follow a similar work flow:
 
@@ -145,13 +232,19 @@ For a given form location: send malicious data, analyse the server response or t
 The difference between the two algorithms is the method of generating the malicious data to send.
 
 \subsubsection{Static Brute Forcing}
-Static Brute Forcing will take a list of known attack vectors, and permeate through the list until one succeeds or none of the attacks succeed.
-
-The list of attack vectors will be generated from the XSS Cheat Sheet [3].
+Static Brute Forcing will take a list of known attack vectors, and permeate through the list until one succeeds or none of the attacks succeed.  The list of attack vectors will be generated from the XSS Cheat Sheet 
 
 The pseudo-code for the algorithm is along the following lines:
 
-%insert pseudo-code
+\begin{lstlisting}
+def StaticBruteForce( Form )     
+    <List> vectors;
+    
+    foreach (vector in vectors) { 
+        attackForm( vector );
+    }
+end
+\end{lstlisting}
 
 This algorithm is primarily used for detecting XSS vulnerabilities but an even simpler version that inputs only one single-quote - ‘ - will be used to detect SQLi vulnerabilities.
 
@@ -160,9 +253,24 @@ Fuzzy Brute Forcing dynamically generates potentially malicious input by generat
 
 The pseudo-code for the algorithm is along the following lines:
 
-%insert pseudo-code
-
+\begin{lstlisting} 
+def FuzzyBruteForce( Form )
+	for (1..1000) { 		
+	    attackForm( fuzzyVector() ); 	
+	}
+end
+\end{lstlisting}
 This algorithm will be used to look at a different set of vulnerabilities: buffer overflow vulnerabilities and directory traversal vulnerabilities.
+
+\subsubsection{Limitations}
+Project Norris is a web application and this may limit it’s usefulness to the average end user, having said that, it has been written as a “hosted solution”.
+
+Project Norris also suffers a limitation of not looking at every aspect of a website that may be vulnerable.  The focus is completely on input forms, whereas cookies and query strings may also contain vulnerabilities.
+
+The detection of SQL Injection attacks is also limited by the fact that different web and SQL servers throw different errors on receipt of invalid SQL statements.  This means that the Attacker will have to be “trained” to understand what types of responses likely indicate an SQL Injection vulnerability, however this is likely to be imperfect.
+
+\section{Implementation}
+
 \section{Results}
 
 this section presents the results of the solutions.  It should include information on experimental settings.  The results should demonstrate the claimed benefits/disadvantages of the proposed solutions.
