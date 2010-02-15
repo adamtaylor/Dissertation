@@ -29,9 +29,22 @@ web application security, sql injection, cross site scripting, xss, brute force,
 \end{keywords}
 
 \section{Introduction}
-This section briefly introduces the general project background, the research question you are addressing, and the project objectives.  It should be between 2 to 3 pages in length.  Do not change the font sizes or line spacing in order to put in more text.
+The aim of the project is twofold: firstly, the creation and evaluation of different attack algorithms to better detect security vulnerabilities and secondly to develop a tool, using the algorithms created, to aid in the automated detection of security vulnerabilities in websites and web applications.
+The purpose of the tool is to help security researchers and website owners to identify areas of their websites and web applications that are vulnerable to particular attacks so that they can mitigate the problem(s).
 
-Note that the whole report, including the references, should not be longer than 20 pages in length.  The system will not accept any report longer than 20 pages.  It should be noted that not all the details of the work carried out in the project can be represented in 20 pages.  It is therefore vital that the Project Log book be kept up to date as this will be used as supplementary material when the project paper is marked.  There should be between 10 and 20 referenced papers---references to Web based pages should be less than 10\%.
+It is prohibitively expensive to perform a manual vulnerability analysis of a web application, however, an automated tool can rapidly analyse a web application using several different attack methodologies much faster than a human.
+
+The Open Web Application Security Project (OWASP) maintain an annual list of the most prevalent vulnerabilities found in web applications. [18].  The two vulnerabilities the algorithms and tool will be primarily addressing are Cross Site Scripting (XSS) and Injection Flaws, particularly SQL Injection (SQLi) flaws in our work.
+
+Almost half of all the vulnerabilities found in web applications were either XSS vulnerabilities or Injection Flaws, which is why these two vulnerabilities are the primary focus of this research. 
+
+XSS vulnerabilities "allows an attacker to manipulate parts of a Web page... By injecting malicious scripting code" [4] which according to a report by CERT allows an attacker to "run malicious code in a users browser with the privileges of a legitimate script originating from the legitimate web server". [19]
+
+Vulnerabilities from XSS attacks include stealing the user's cookies and hijacking their session and/or account, connecting users to malicious servers of the attacker's choice or performing other malicious operations on the user's machine under the guise of the vulnerable site. [12]
+
+SQL injection attacks revolve around the attacker "trying to exploit the data provider at the backend...leading to information disclosure". [4]
+
+SQL injection attacks “allow attackers to create, read, update, or delete any arbitrary data available to the application. In the worst case scenario, these flaws allow an attacker to completely compromise the application and the underlying systems, even bypassing deeply nested firewalled environments.” [18] 
 
 \section{Related Work}
 This section presents a survey of existing work on the problems that this project addresses.  it should be between 2 to 4 pages in length.  The rest of this section shows the formats of subsections as well as some general formatting information for tables, figures, references and equations.
