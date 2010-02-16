@@ -5,3 +5,5 @@ This is my dissertation.  I don't imagine you're interested in it (it's about au
 There's no code for you because I believe it's (c) Durham University (even though I wrote it all myself!).
 
 Have a nice day!
+
+(c) 2009/10 Adam JC Taylor and Durham University
