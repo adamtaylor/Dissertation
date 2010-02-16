@@ -306,7 +306,7 @@ The Crawler and the Attacker and then started up and continuously poll the datab
 \subsection{Crawler}
 The Crawler receives a URL from the GUI in the job it receives from the Queue.  It then initialises a queue of its own with the initial URL on and enters a while loop, whose precondition is that the queue has at least one item on it.  The Crawler then proceeds to find every link on that page using the Perl module WWW::Mechanize.  As well as the queue it maintains a hash of { URL => no. of times seen }.  For each link it finds on each page it checks whether or not it exists in the hash, if not it adds that link to the queue and if so it simply increments the count of the number of times it has been seen.
 
-It also performs some additional checks before following a URL: it makes sure that it only follows links to pages that are of content type 'text/html',  it only follows URLs of pages on the same top level domain (TLD) as the initial URL and it treats http://example.com/about and http://example.com/about#careers as the same URL to avoid excessively crawling the same page.
+It also performs some additional checks before following a URL: it makes sure that it only follows links to pages that are of content type 'text/html',  it only follows URLs of pages on the same top level domain (TLD) as the initial URL and it treats http://example.com/about and http://example.com/about\#careers as the same URL to avoid excessively crawling the same page.
 
 While on a page it also looks for PointsOfInterest that can be passed to the Attacker.  If it finds a form on the page, it inserts a new job on the Queue with a reference to the form it found for the Attacker to perform XSS and SQLi attacks.  If it finds a URI fragment, such as, http://example.com/index.php?page=../home.php, it inserts a new job on the Queue with a reference to the URI for the Attacker to perform a directory traversal attack.
 
@@ -320,6 +320,10 @@ If it has been passed a Form PointofInterest from the Crawler it first executes 
 The SQLi injection algorithm works by inserting a single quote - ' - into all the input fields and attempts to work out if a server or database error was thrown in response.  This is done by checking the HTTP Response Header from the server to check whether or not it is in the 50x range - indicating an error - or looking for common database error phrases output by different database systems in the HTTP Response Body.  
 
 This is incomplete as sometimes false positives are found if certain phrases assumed to demonstrate SQLi vulnerabilities are present in the HTTP Response Body and also we do not have a full list of all the errors sent by all different types and versions of database systems.
+
+\subsection{Testing}
+The project has a number of system tests, implemented using the Test::More module which uses the Test Anything Protocol (TAP) to output simple text-based results.  This provides a means of ensuring the various front-end facing features of the tool are working as expected.
+
 \section{Results}
 
 this section presents the results of the solutions.  It should include information on experimental settings.  The results should demonstrate the claimed benefits/disadvantages of the proposed solutions.
@@ -328,7 +332,11 @@ This section should be between 2 to 3 pages in length.
 
 \section{Evaluation}
 
-This section should between 1 to 2 pages in length.
+\subsection{Comparison}
+
+\subsection{Performance}
+
+\subsection{Engineering Best Practices}
 
 \section{Conclusions}
 
