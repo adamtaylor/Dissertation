@@ -304,7 +304,11 @@ The Queue is implemented using a Perl module called TheSchwartz, which uses the 
 The Crawler and the Attacker and then started up and continuously poll the database/queue looking for new jobs which they can perform, once they are complete they then look for more jobs.
 
 \subsection{Crawler}
-The Crawler makes extensive use of the Perl module WWW::Mechanize which is used to find the links on the pages it finds.
+The Crawler receives a URL from the GUI in the job it receives from the Queue.  It then initialises a queue of its own with the initial URL on and enters a while loop, whose precondition is that the queue has at least one item on it.  The Crawler then proceeds to find every link on that page using the Perl module WWW::Mechanize.  As well as the queue it maintains a hash of { URL => no. of times seen }.  For each link it finds on each page it checks whether or not it exists in the hash, if not it adds that link to the queue and if so it simply increments the count of the number of times it has been seen.
+
+It also performs some additional checks before following a URL: it makes sure that it only follows links to pages that are of content type 'text/html',  it only follows URLs of pages on the same top level domain (TLD) as the initial URL and it treats http://example.com/about and http://example.com/about#careers as the same URL to avoid excessively crawling the same page.
+
+While on a page it also looks for PointsOfInterest that can be passed to the Attacker.  If it finds a form on the page, it inserts a new job on the Queue with a reference to the form it found for the Attacker to perform XSS and SQLi attacks.  If it finds a URI fragment, such as, http://example.com/index.php?page=../home.php, it inserts a new job on the Queue with a reference to the URI for the Attacker to perform a directory traversal attack.
 
 \subsection{Attacker}
 The Attacker component first checks to see whether it has received a URI or a Form PointOfInterest and stores the PointOfInterest in the Database for the GUI.  If it is a URI PointOfInterest it executes the directory traversal, fuzzy-based algorithm.  This works by attempting to access <\$input\_uri>../etc/passwd, then <\$input\_uri>../../etc/passwd and so on and looking, via regular expression, for the word 'root' (as in the root user accout) in the HTTP Response Body returned from the server.  If it is found a Vulnerability is stored in the database for that particular PointOfInterest.
