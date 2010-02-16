@@ -307,8 +307,15 @@ The Crawler and the Attacker and then started up and continuously poll the datab
 The Crawler makes extensive use of the Perl module WWW::Mechanize which is used to find the links on the pages it finds.
 
 \subsection{Attacker}
-The Attacker also uses WWW::Mechanize along with HTTP::Header.
+The Attacker component first checks to see whether it has received a URI or a Form PointOfInterest and stores the PointOfInterest in the Database for the GUI.  If it is a URI PointOfInterest it executes the directory traversal, fuzzy-based algorithm.  This works by attempting to access <\$input\_uri>../etc/passwd, then <\$input\_uri>../../etc/passwd and so on and looking, via regular expression, for the word 'root' (as in the root user accout) in the HTTP Response Body returned from the server.  If it is found a Vulnerability is stored in the database for that particular PointOfInterest.
 
+This can return false positives and only works on unix based servers.
+
+If it has been passed a Form PointofInterest from the Crawler it first executes the XSS algorithm and then the SQLi algorithm.  The XSS algorithm works by permiating through a list of predefined attack vectors. For iteration through the list of vectors the vector is set as the input for each field of the form, which is then submitted, and in the HTTP Response Body the attack vector is searched for, via regular expressions.  If it is found then it is assumed that the vector was successful and a Vulnerability is stored in the database for that PointOfInterest.
+
+The SQLi injection algorithm works by inserting a single quote - ' - into all the input fields and attempts to work out if a server or database error was thrown in response.  This is done by checking the HTTP Response Header from the server to check whether or not it is in the 50x range - indicating an error - or looking for common database error phrases output by different database systems in the HTTP Response Body.  
+
+This is incomplete as sometimes false positives are found if certain phrases assumed to demonstrate SQLi vulnerabilities are present in the HTTP Response Body and also we do not have a full list of all the errors sent by all different types and versions of database systems.
 \section{Results}
 
 this section presents the results of the solutions.  It should include information on experimental settings.  The results should demonstrate the claimed benefits/disadvantages of the proposed solutions.
