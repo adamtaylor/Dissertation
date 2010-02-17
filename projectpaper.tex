@@ -2,7 +2,9 @@
 \usepackage{times}
 \usepackage{durhampaper}
 \usepackage{harvard}
-\usepackage{listings} 
+\usepackage{listings}
+\usepackage[pdftex]{graphicx}
+\usepackage{float}
 
 \citationmode{abbr}
 \bibliographystyle{agsm}
@@ -20,13 +22,13 @@
 \maketitle
 
 \begin{abstract}
-These instructions give you guidelines for preparing the final paper.  DO NOT change any settings, such as margins and font sizes.  Just use this as a template and modify the contents into your final paper.  Do not cite references in the abstract.
+    These instructions give you guidelines for preparing the final paper.  DO NOT change any settings, such as margins and font sizes.  Just use this as a template and modify the contents into your final paper.  Do not cite references in the abstract.
 
-The abstract must be a Structured Abstract with the headings {\bf Context/Background}, {\bf Aims}, {\bf Method}, {\bf Results}, and {\bf Conclusions}.  This section should not be longer than half of a page, and having no more than one or two sentences under each heading is advised.
+    The abstract must be a Structured Abstract with the headings {\bf Context/Background}, {\bf Aims}, {\bf Method}, {\bf Results}, and {\bf Conclusions}.  This section should not be longer than half of a page, and having no more than one or two sentences under each heading is advised.
 \end{abstract}
 
 \begin{keywords}
-web application security, sql injection, cross site scripting, xss, brute force, fuzzing
+    web application security, sql injection, cross site scripting, xss, brute force, fuzzing
 \end{keywords}
 
 \section{Introduction}
@@ -123,9 +125,16 @@ Consequently, the research and development of a black box, automated vulnerabili
 \subsection{Architecture and Design}
 
 \subsubsection{Overview}
-The following component diagram provides an architectural overview of the proposed solution: Project Norris.
+Figure~\ref{fig:overview} provides an architectural overview of the proposed solution.
 
 %insert picture/figure
+\begin{figure}[!ht]
+    \begin{center}
+        \includegraphics[scale=0.7]{images/overview_component_diagram.pdf}    
+    \end{center}
+    \caption{Component Diagram of Project Norris}
+    \label{fig:overview}
+\end{figure}
 
 Project Norris is a web-based application that allows a user to input a URL of a website, and then after crawling, parsing, and attacking the website, displays a report to the user of any security vulnerabilities found in the website by Project Norris.
 
