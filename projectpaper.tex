@@ -32,21 +32,21 @@
 \end{keywords}
 
 \section{Introduction}
-The aim of the project is to create and analyse web application vulnerability detection algorithms.  To support the evaluation and analysis of the algorithms, a proof-of-concept web-based tool will be developed that utilises the algorithms to detected vulnerabilities in web applications.
+The aim of the project is to create and analyse web application vulnerability detection algorithms.  To support the evaluation and analysis of the algorithms, a proof-of-concept web-based tool will be developed that utilises the algorithms to detect vulnerabilities in web applications.
 
 Hypothetically, if the tool were fully complete, the purpose of the tool would be to help security researchers and website owners to identify areas of their websites and web applications that are vulnerable to particular attacks so that they can mitigate the problem(s).
 
-It is prohibitively expensive to perform a manual vulnerability analysis of a web application, however, an automated tool can rapidly analyse a web application using several different attack methodologies much faster than a human.
+The motivation for the development of such a tool is the fact that it is prohibitively expensive to perform a manual vulnerability analysis of a web application, however, an automated tool can rapidly analyse a web application using several different attack methodologies much faster than a human.
 
 The Open Web Application Security Project (OWASP) maintain an annual list of the most prevalent vulnerabilities found in web applications. [18].  The two vulnerabilities the algorithms and tool will be primarily addressing are Cross Site Scripting (XSS) and Injection Flaws, particularly SQL Injection (SQLi) flaws in our work.
 
 Almost half of all the vulnerabilities found in web applications were either XSS vulnerabilities or Injection Flaws, which is why these two vulnerabilities are the primary focus of this research. 
 
-XSS vulnerabilities "allows an attacker to manipulate parts of a Web page... By injecting malicious scripting code" [4] which according to a report by CERT allows an attacker to "run malicious code in a users browser with the privileges of a legitimate script originating from the legitimate web server". [19]
+XSS vulnerabilities ``allows an attacker to manipulate parts of a Web page... By injecting malicious scripting code" [4] which according to a report by CERT allows an attacker to ``run malicious code in a users browser with the privileges of a legitimate script originating from the legitimate web server". [19]
 
 Vulnerabilities from XSS attacks include stealing the user's cookies and hijacking their session and/or account, connecting users to malicious servers of the attacker's choice or performing other malicious operations on the user's machine under the guise of the vulnerable site. [12]
 
-SQL injection attacks revolve around the attacker "trying to exploit the data provider at the backend...leading to information disclosure". [4]
+SQL injection attacks revolve around the attacker ``trying to exploit the data provider at the backend...leading to information disclosure". [4]
 
 SQL injection attacks “allow attackers to create, read, update, or delete any arbitrary data available to the application. In the worst case scenario, these flaws allow an attacker to completely compromise the application and the underlying systems, even bypassing deeply nested firewalled environments.” [18] 
 
@@ -100,32 +100,12 @@ On the other hand, tools based on the idea of black box vulnerability scanning c
 
 Consequently, the research and development of a black box, automated vulnerability scanning tool appears to be the best direction to take to ensure maximum web application coverage.  It is hoped that this ability to analyse web applications written in any language will be a large improvement over other static analysis tools.
 
-% \subsection{Figures and Tables}
-% In general, figures and tables should not appear before they are cited.  Place figure captions below the figures; place table titles above the tables.  If your figure has two parts, for example, include the labels ``(a)'' and ``(b)'' as part of the artwork.  Please verify that figures and tables you mention in the text actually exist.  make sure that all tables and figures are numbered as shown in Table \ref{units} and Figure 1.
-% %sort out your own preferred means of inserting figures
-% 
-% \begin{table}[htb]
-% \centering
-% \caption{UNITS FOR MAGNETIC PROPERTIES}
-% \vspace*{6pt}
-% \label{units}
-% \begin{tabular}{ccc}\hline\hline
-% Symbol & Quantity & Conversion from Gaussian \\ \hline
-% \end{tabular}
-% \end{table}
-% 
-% \subsection{References}
-% 
-% The list of cited references should appear at the end of the report, ordered alphabetically by the surnames of the first authors.  References cited in the main text should use Harvard (author, date) format.  When citing a section in a book, please give the relevant page numbers, as in \cite[p293]{budgen}.  When citing, where there are either one or two authors, use the names, but if there are more than two, give the first one and use ``et al.'' as in  , except where this would be ambiguous, in which case use all author names.
-% 
-% You need to give all authors' names in each reference.  Do not use ``et al.'' unless there are more than five authors.  Papers that have not been published should be cited as ``unpublished'' \cite{euther}.  Papers that have been submitted or accepted for publication should be cited as ``submitted for publication'' as in \cite{futher} .  You can also cite using just the year when the author's name appears in the text, as in ``but according to Futher \citeyear{futher}, we \dots''.  Where an authors has more than one publication in a year, add `a', `b' etc. after the year.
-
 \section{Solution}
 
 \subsection{Architecture and Design}
 
 \subsubsection{Overview}
-Figure~\ref{fig:overview} provides an architectural overview of the proposed solution.
+Figure~\ref{fig:overview} provides an architectural overview of Project Norris, the proposed solution.
 
 %insert picture/figure
 \begin{figure}[!ht]
@@ -138,12 +118,12 @@ Figure~\ref{fig:overview} provides an architectural overview of the proposed sol
 
 Project Norris is a web-based application that allows a user to input a URL of a website, and then after crawling, parsing, and attacking the website, displays a report to the user of any security vulnerabilities found in the website by Project Norris.
 
-The design of Project Norris has been broken down into a number of core components.  The user interface of Project Norris is handled by an MVC-based web application.  There are then two main back-end components which do the heavy processing for the application.  These are the Attacker component and the Crawler component.
+The design of Project Norris has been broken down into a number of core components.  The user interface of Project Norris is handled by an model-view-controller (MVC) based web application.  There are then two main back-end components which do the heavy processing for the application.  These are the Attacker component and the Crawler component.
 
 The Web GUI interacts with the back-end components by placing jobs on another component, the Queue.
 The Attacker and Crawler are further broken down into two components each, one being a worker script which is continuously run that checks for new jobs on the Queue and the other component being the code that is run by the script when a job is found.
 
-Many of the components also rely on another component, the Database. This is to allow data to be stored persistently rather than only in-memory.
+Many of the components also rely on another component, the Database. This is to allow data to be stored persistently rather than only in-memory, i.e. all the data related to vulnerabilities found in web applications are stored in the database.
 
 The Queue component relies heavily on the Database because when a job is added to the Queue it is actually inserted into the Database.  Consequently when the two worker scripts are asking the Queue if there are any available jobs the Queue actually just queries the database.
 
@@ -163,57 +143,76 @@ So http://baseurl.com/websites/view/1 would map to the controller Websites and t
 Views are simply template files, possibly with place holders for data and simple logic for dynamic code, rendered inside a global template file, with data being passed in via controllers.
 
 \subsubsection{Queue}
-The Queue is simply a FIFO, database-backed job allocation system.  It works in the following way:
+The Queue is simply a `first in first out', database-backed job allocation system.  It works in the following way:
 
 A job is inserted into the Queue (and hence the database) containing, among other things, a reference to the function of work this particular job is associated with and any arguments the job requires.
 
 For example, to add a new website to be crawled, a job is added to the queue containing a reference to the fact that it is a crawling job and the arguments passed are the url of the website.
 
-Worker scripts are started, and left continuously running, that check the queue at set intervals looking for work they can perform.  If they find any work, they dequeue the job and then using the module with the actually job functionality implemented they perform the task and then go back to looking at the queue until another job appears which they can perform.
+Worker scripts are started, and left continuously running, that poll the queue at set intervals looking for work they can perform.  If they find any work, they dequeue the job and then using the module with the actual job functionality implemented they perform the task and then go back to looking at the queue until another job appears which they can perform.
 
-The following activity diagram represents this process:
+The activity diagram, Figure ~\ref{fig:queue}, represents this process.
 
 %insert activity diagram
+\begin{figure}[!ht]
+    \begin{center}
+        \includegraphics[scale=0.7]{images/queue_activity_diagram.png}    
+    \end{center}
+    \caption{Activity Diagram of Project Norris' Queue}
+    \label{fig:queue}
+\end{figure}
 
 \subsubsection{Database}
 The Database is an integral component in allowing persistent storage of data and is crucial to the function of the Queue. 
 
-The models in the Web GUI are backed by tables in the database, with an ORM layer between, allowing objects in the Web GUI to be persistently stored beyond one HTTP request.
+The models in the Web GUI are backed by tables in the database, with an object-relational mapper (ORM) layer between, allowing objects in the Web GUI to be persistently stored beyond one HTTP request.
 
 \subsubsection{Crawler/Parser}
-The Crawler receives a URL of a website that requires crawling and parsing, and then creates it’s own queue of URLs that need crawling.  
+The Crawler receives a URL of a website that requires crawling and parsing, and then creates its own queue of URLs that need crawling.  
 
-It dequeues one URL at a time and then requests the content of that page and looks for all links that do not leave the base url and that it hasn’t already seen and adds them to its queue.
+It dequeues one URL at a time and then requests the content of that page and looks for all links that do not leave the base url and that it hasn't already seen and adds them to its queue.
 
-The Crawler’s queue is an array of hashes of the form { url => count }.  This way it can check if it has already seen a URL by checking if url{‘count’}++ == TRUE.  Everytime it finds a URL it either inserts 
+The Crawler’s queue is an array of hashes of the form \{ url =$>$ count \}.  This way it can check if it has already seen a URL by checking if url\{`count'\}++ == TRUE.  Everytime it finds a URL it either inserts 
 
 It also parses the page looking for any forms and if it finds them it adds them to the Queue for the Attacker.
 
 The following activity diagram shows how the crawler works:
+
+\begin{figure}[!ht]
+    \begin{center}
+        \includegraphics[scale=0.7]{images/crawler_activity_diagram.pdf}    
+    \end{center}
+    \caption{Activity Diagram of Project Norris' Crawler}
+    \label{fig:crawler}
+\end{figure}
 
 %insert activity diagram
 
 \subsubsection{Attacker}
 The attacker receives a form object and a url to attack.  It inserts the location of the form into the Database as a PointOfInterest.  
 
-It then proceeds to attack the form, looking for Cross Site Scripting and SQL Injection vulnerabilities, by passing in data generated by two algorithms described in section 3.5.  It analyses the server response, either looking for HTTP Repsonse Codes indicating errors or by looking through the Response Body for injected code.
+It then proceeds to attack the form, looking for Cross Site Scripting and SQL Injection vulnerabilities, by passing in data generated by two algorithms described in detail later.  It analyses the server response, either looking for HTTP Repsonse Codes indicating errors or by looking through the Response Body for injected code.
 
 If any vulnerabilities are found they are inserted into the database so that reports can be generated by the Web GUI.
 
 \subsubsection{Workflow}
-The workflow  between the various components is demonstrated in the following sequence diagram:
+The workflow between the various components is demonstrated in the sequence diagram (Figure ~\ref{fig:workflow}).
 
-%insert sequence diagram
-
-Time progresses down the dashed lines.
+\begin{figure}[!ht]
+    \begin{center}
+        \includegraphics[angle=90]{images/system_sequence_diagram.pdf}    
+    \end{center}
+    \caption{Sequence Diagram of Project Norris}
+    \label{fig:workflow}
+\end{figure}
 
 When a user first visits Project Norris in a web browser, they are presented with an opportunity to input a URL to scan.  If they do this the Web GUI then places the URL onto the Queue.
 
-There are two worker scripts, one for the Crawler and one for the Attacker, which are continually checking the Queue for jobs.
+There are two worker scripts, one for the Crawler and one for the Attacker, which are continually polling the Queue for jobs.
 
-As soon as the Crawler sees that there is a job available (i.e. the URL just placed onto the Queue by the Web GUI) a cycle kicks in where the Crawler takes the URL and crawls the whole site finding every page on the domain.  It maintains it’s own queue of the URLs on the domain, to ensure it only looks processes new URLs.
+As soon as the Crawler sees that there is a job available (i.e. the URL just placed onto the Queue by the Web GUI) a cycle kicks in where the Crawler takes the URL and crawls the whole site finding every page on the domain.  It maintains it’s own queue of the URLs on the domain, to ensure it only processes new URLs.
 
-When it find it requests each page, as well as finding all the links, if there are any forms on the page it inserts this as a job in the Queue for the Attacker.
+It enters a loop where it enqueues every unseen link on a page into the queue and looks for any forms on the page, which if it finds, inserts as a job on the Queue for the Attacker, then it dequeues the next URL to look at until there are no more pages on the domain to crawl.
 
 When it has finished crawling and parsing the whole website it goes back to watching the Queue for new jobs.
 
@@ -222,11 +221,21 @@ The attacker takes a form off the Queue and then proceeds to attack the form and
 The user is then able to generate reports in the Web GUI, which are created using the data in the database collected by the Attacker.
 
 \subsubsection{Data Flow}
-Data flows through Project Norris in the following way:
+Data flows through Project Norris in the way illustrated in ~\ref{fig:dataflow}.
 
-- A URL is inserted into the Queue and a Website object is created and stored in the database
-- The Crawler dequeues the URL and proceeds to crawl and parse the whole domain.  Any Forms it finds are inserted into the Queue.
-- The Attacker dequeues any Forms in the Queue and proceeds to attack the form.  The Forms themselves are inserted into the database by creating PointOfInterest objects and any successful attacks are stored as Vulnerability objects.  
+\begin{figure}[!ht]
+    \begin{center}
+        \includegraphics[scale=0.7]{images/data_flow_diagram.png}    
+    \end{center}
+    \caption{Data Flow Diagram of Project Norris}
+    \label{fig:dataflow}
+\end{figure}
+
+\begin{itemize}
+    \item A URL is inserted into the Queue and a Website object is created and stored in the database
+    \item The Crawler dequeues the URL and proceeds to crawl and parse the whole domain.  Any Forms it finds are inserted into the Queue.
+    \item The Attacker dequeues any Forms in the Queue and proceeds to attack the form.  The Forms themselves are inserted into the database by creating PointOfInterest objects and any successful attacks are stored as Vulnerability objects.  
+\end{itemize}
 
 So one Website can have many PointsOfInterest, and one PointOfInterest can have many Vulnerabilities.
 
@@ -278,7 +287,7 @@ Project Norris also suffers a limitation of not looking at every aspect of a web
 The detection of SQL Injection attacks is also limited by the fact that different web and SQL servers throw different errors on receipt of invalid SQL statements.  This means that the Attacker will have to be “trained” to understand what types of responses likely indicate an SQL Injection vulnerability, however this is likely to be imperfect.
 
 \section{Implementation}
-The crawler has been developed using a Breadth First Search algorithm.  It is passed a base URL and it then gets all the links on that page and adds them to a queue.  It then proceeds to dequeue one URL at a time and and get all the links on that page and then put them on the queue (unless any of them have already been visited - it maintains a hash table of URL => no. of times seen so it can quickly check whether or not a URL has been seen before).
+The crawler has been developed using a Breadth First Search algorithm.  It is passed a base URL and it then gets all the links on that page and adds them to a queue.  It then proceeds to dequeue one URL at a time and and get all the links on that page and then put them on the queue (unless any of them have already been visited - it maintains a hash table of URL =$>$ no. of times seen so it can quickly check whether or not a URL has been seen before).
 
 Parsing is done by using a mixture of Regular Expressions and the Perl web browsing module: WWW::Mechanize.
 
@@ -290,11 +299,11 @@ For any successful attacks a vulnerability is stored which is associated with a 
 
 The database for storing data related to a website is as follows:
 
-A \em{Website} contains a name and URL.
-A \em{Website} has many \em{PointsOfInterest} where a point of interest is a URL.
-A \em{PointOfInterest} has many \em{Vulnerabilities} where a \em{Vulnerability} has a type and an input string.
+A \emph{Website} contains a name and URL.
+A \emph{Website} has many \emph{PointsOfInterest} where a point of interest is a URL.
+A \emph{PointOfInterest} has many \emph{Vulnerabilities} where a \emph{Vulnerability} has a type and an input string.
 
-Two intermediary tables are used to normalise the many-to-many relationships: \em{WebsitePointOfInterest} and \em{PointOfInterestVulnerability}.
+Two intermediary tables are used to normalise the many-to-many relationships: \emph{WebsitePointOfInterest} and \emph{PointOfInterestVulnerability}.
 
 The GUI is an simple web application that allows a user to add or delete websites, to initiate a new scan of a website (which means to place the URL onto the job queue for the crawler and attacker).
 
@@ -313,14 +322,14 @@ The Queue is implemented using a Perl module called TheSchwartz, which uses the 
 The Crawler and the Attacker and then started up and continuously poll the database/queue looking for new jobs which they can perform, once they are complete they then look for more jobs.
 
 \subsection{Crawler}
-The Crawler receives a URL from the GUI in the job it receives from the Queue.  It then initialises a queue of its own with the initial URL on and enters a while loop, whose precondition is that the queue has at least one item on it.  The Crawler then proceeds to find every link on that page using the Perl module WWW::Mechanize.  As well as the queue it maintains a hash of { URL => no. of times seen }.  For each link it finds on each page it checks whether or not it exists in the hash, if not it adds that link to the queue and if so it simply increments the count of the number of times it has been seen.
+The Crawler receives a URL from the GUI in the job it receives from the Queue.  It then initialises a queue of its own with the initial URL on and enters a while loop, whose precondition is that the queue has at least one item on it.  The Crawler then proceeds to find every link on that page using the Perl module WWW::Mechanize.  As well as the queue it maintains a hash of { URL =$>$ no. of times seen }.  For each link it finds on each page it checks whether or not it exists in the hash, if not it adds that link to the queue and if so it simply increments the count of the number of times it has been seen.
 
-It also performs some additional checks before following a URL: it makes sure that it only follows links to pages that are of content type 'text/html',  it only follows URLs of pages on the same top level domain (TLD) as the initial URL and it treats http://example.com/about and http://example.com/about\#careers as the same URL to avoid excessively crawling the same page.
+It also performs some additional checks before following a URL: it makes sure that it only follows links to pages that are of content type `text/html',  it only follows URLs of pages on the same top level domain (TLD) as the initial URL and it treats http://example.com/about and http://example.com/about\#careers as the same URL to avoid excessively crawling the same page.
 
 While on a page it also looks for PointsOfInterest that can be passed to the Attacker.  If it finds a form on the page, it inserts a new job on the Queue with a reference to the form it found for the Attacker to perform XSS and SQLi attacks.  If it finds a URI fragment, such as, http://example.com/index.php?page=../home.php, it inserts a new job on the Queue with a reference to the URI for the Attacker to perform a directory traversal attack.
 
 \subsection{Attacker}
-The Attacker component first checks to see whether it has received a URI or a Form PointOfInterest and stores the PointOfInterest in the Database for the GUI.  If it is a URI PointOfInterest it executes the directory traversal, fuzzy-based algorithm.  This works by attempting to access <\$input\_uri>../etc/passwd, then <\$input\_uri>../../etc/passwd and so on and looking, via regular expression, for the word 'root' (as in the root user accout) in the HTTP Response Body returned from the server.  If it is found a Vulnerability is stored in the database for that particular PointOfInterest.
+The Attacker component first checks to see whether it has received a URI or a Form PointOfInterest and stores the PointOfInterest in the Database for the GUI.  If it is a URI PointOfInterest it executes the directory traversal, fuzzy-based algorithm.  This works by attempting to access $<$\$input\_uri$>$../etc/passwd, then $<$\$input\_uri$>$../../etc/passwd and so on and looking, via regular expression, for the word `root' (as in the root user accout) in the HTTP Response Body returned from the server.  If it is found a Vulnerability is stored in the database for that particular PointOfInterest.
 
 This can return false positives and only works on unix based servers.
 
