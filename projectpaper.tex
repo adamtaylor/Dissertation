@@ -167,6 +167,16 @@ The Database is an integral component in allowing persistent storage of data and
 
 The models in the Web GUI are backed by tables in the database, with an object-relational mapper (ORM) layer between, allowing objects in the Web GUI to be persistently stored beyond one HTTP request.
 
+There are three main tables used throughout the application:
+
+\begin{itemize}
+    \item{Websites - A website is a URL which a user enters that can then be scanned and have reports generated.}
+    \item{PointsOfInterest - A PointOfInterest is any forms, or URL fragments that the crawler/parser finds when crawling the Website.  These are what are passed to the Attacker to look for vulnerabilities...}
+    \item{Vulnerabilities - Any vulnerabilities found by the attacker are stored in the Vulnerability table.}
+\end{itemize}
+
+In essence, a Website has many PointsOfInterest and each PointOfInterest can have many Vulnerabilities.
+
 \subsubsection{Crawler/Parser}
 The Crawler receives a URL of a website that requires crawling and parsing, and then creates its own queue of URLs that need crawling.  
 
@@ -289,7 +299,7 @@ The detection of SQL Injection attacks is also limited by the fact that differen
 \section{Implementation}
 The crawler has been developed using a Breadth First Search algorithm.  It is passed a base URL and it then gets all the links on that page and adds them to a queue.  It then proceeds to dequeue one URL at a time and and get all the links on that page and then put them on the queue (unless any of them have already been visited - it maintains a hash table of URL =$>$ no. of times seen so it can quickly check whether or not a URL has been seen before).
 
-Parsing is done by using a mixture of Regular Expressions and the Perl web browsing module: WWW::Mechanize.
+Parsing is done by using a mixture of Regular Expressions and the Perl web browsing module WWW::Mechanize.
 
 The attacking component is passed an object representing a form (HTML::Form) from the crawler, and then proceeds to input different attack vectors, submit the form and parse the HTTP Response Body or Header, sent from the server, to see whether or not the attack was successful.
 
@@ -315,14 +325,14 @@ The GUI has been developed using the Catalyst web framework.  Catalyst is a Perl
 DBIx::Class is a Perl object relational mapper (ORM).  It is used to map objects created in the GUI directly to rows in the database.  It provides a clean interface for constructing SQL queries and persistently storing objects and has been used alongside Catalyst in the development of the GUI.
 
 \subsection{Job Queue}
-The Job Queue is used to pass jobs between the GUI, the Crawler and the Attacker.  Without the Job Queue this whole communication process would be tightly coupled and, save multi-threading, would cause the GUI to lock up while comments finished their tasks.
+The Job Queue is used to pass jobs between the GUI, the Crawler and the Attacker.  Without the Job Queue this whole communication process would be tightly coupled and, save multi-threading, would cause the GUI to lock up while components finished their tasks.
 
 The Queue is implemented using a Perl module called TheSchwartz, which uses the Database (MySQL 5) for storing specific jobs as well as meta data about which components can perform which tasks.
 
 The Crawler and the Attacker and then started up and continuously poll the database/queue looking for new jobs which they can perform, once they are complete they then look for more jobs.
 
 \subsection{Crawler}
-The Crawler receives a URL from the GUI in the job it receives from the Queue.  It then initialises a queue of its own with the initial URL on and enters a while loop, whose precondition is that the queue has at least one item on it.  The Crawler then proceeds to find every link on that page using the Perl module WWW::Mechanize.  As well as the queue it maintains a hash of { URL =$>$ no. of times seen }.  For each link it finds on each page it checks whether or not it exists in the hash, if not it adds that link to the queue and if so it simply increments the count of the number of times it has been seen.
+The Crawler receives a URL from the GUI in the job it receives from the Queue.  It then initialises a queue of its own with the initial URL on and enters a while loop, whose precondition is that the queue has at least one item on it.  The Crawler then proceeds to find every link on that page using the Perl module WWW::Mechanize.  As well as the queue it maintains a hash of \{ URL =$>$ no. of times seen \}.  For each link it finds on each page it checks whether or not it exists in the hash, if not it adds that link to the queue and if so it simply increments the count of the number of times it has been seen.
 
 It also performs some additional checks before following a URL: it makes sure that it only follows links to pages that are of content type `text/html',  it only follows URLs of pages on the same top level domain (TLD) as the initial URL and it treats http://example.com/about and http://example.com/about\#careers as the same URL to avoid excessively crawling the same page.
 
@@ -333,7 +343,7 @@ The Attacker component first checks to see whether it has received a URI or a Fo
 
 This can return false positives and only works on unix based servers.
 
-If it has been passed a Form PointofInterest from the Crawler it first executes the XSS algorithm and then the SQLi algorithm.  The XSS algorithm works by permiating through a list of predefined attack vectors. For iteration through the list of vectors the vector is set as the input for each field of the form, which is then submitted, and in the HTTP Response Body the attack vector is searched for, via regular expressions.  If it is found then it is assumed that the vector was successful and a Vulnerability is stored in the database for that PointOfInterest.
+If it has been passed a Form PointofInterest from the Crawler it first executes the XSS algorithm and then the SQLi algorithm.  The XSS algorithm works by permeating through a list of predefined attack vectors. For iteration through the list of vectors the vector is set as the input for each field of the form, which is then submitted, and in the HTTP Response Body the attack vector is searched for, via regular expressions.  If it is found then it is assumed that the vector was successful and a Vulnerability is stored in the database for that PointOfInterest.
 
 The SQLi injection algorithm works by inserting a single quote - ' - into all the input fields and attempts to work out if a server or database error was thrown in response.  This is done by checking the HTTP Response Header from the server to check whether or not it is in the 50x range - indicating an error - or looking for common database error phrases output by different database systems in the HTTP Response Body.  
 
@@ -358,6 +368,7 @@ The modifications made were to remove the need to login as at present the Crawle
 \subsection{Performance}
 
 \subsection{Engineering Best Practices}
+While developing Project Norris software engineering \emph{principles} and \emph{best practices} have been followed where appropriate.  The tool was developed with iteration in mind, and was incrementally designed over a number of weeks, continuously testing and improving the components.
 
 \section{Conclusions}
 
