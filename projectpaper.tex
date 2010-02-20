@@ -229,7 +229,7 @@ The attacker takes a form off the Queue and then proceeds to attack the form and
 The user is then able to generate reports in the Web GUI, which are created using the data in the database collected by the Attacker.
 
 \subsubsection{Data Flow}
-Data flows through Project Norris in the way illustrated in ~\ref{fig:dataflow}.
+Data flows through Project Norris in the way illustrated in Figure ~\ref{fig:dataflow}.
 
 \begin{figure}[!ht]
     \begin{center}
@@ -241,13 +241,11 @@ Data flows through Project Norris in the way illustrated in ~\ref{fig:dataflow}.
 
 \begin{itemize}
     \item A URL is inserted into the Queue and a Website object is created and stored in the database
-    \item The Crawler dequeues the URL and proceeds to crawl and parse the whole domain.  Any Forms it finds are inserted into the Queue.
-    \item The Attacker dequeues any Forms in the Queue and proceeds to attack the form.  The Forms themselves are inserted into the database by creating PointOfInterest objects and any successful attacks are stored as Vulnerability objects.  
+    \item The Crawler dequeues the URL and proceeds to crawl and parse the whole domain.  Any PointsOfInterest it finds are inserted into the Queue.
+    \item The Attacker dequeues any PointsOfInterest in the Queue and proceeds to attack the PointOfInterest.  The PointsOfInterest themselves are inserted into the database by creating PointOfInterest objects and any successful attacks are stored as Vulnerability objects in the database.  
 \end{itemize}
 
 So one Website can have many PointsOfInterest, and one PointOfInterest can have many Vulnerabilities.
-
-The following diagram shows the data flow through the system:
 
 \subsection{Algorithms}
 There are two vulnerability detection algorithms in Project Norris.  Both are fairly primitive and follow a similar work flow:
