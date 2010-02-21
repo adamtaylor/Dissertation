@@ -281,7 +281,7 @@ The attacking component is also responsible for storing data.  Every time it sta
 
 For any successful attacks a vulnerability is stored which is associated with a specific PointOfInterest (which is in turn associated with a Website).
 
-The GUI is an simple web application that allows a user to add or delete websites, to initiate a new scan of a website (which means to place the URL onto the job queue for the crawler and attacker).
+
 
 The job queue uses another database which contains a table of jobs.  Worker scripts watch the database and pull off jobs if they are capable of performing the work.
 
@@ -324,9 +324,21 @@ end
 This algorithm will be used to look at a different set of vulnerabilities: buffer overflow vulnerabilities and directory traversal vulnerabilities.
 
 \subsection{Web GUI Implementation}
+The GUI is an simple web application that allows a user to add or delete websites, to initiate a new scan of a website (which means to place the URL onto the job queue for the crawler and attacker) and to view reports.
+
 The GUI has been developed using the Catalyst web framework.  Catalyst is a Perl model-view-controller (MVC) based framework.  It provides helpers for many common tasks in web application development, provides architectural guidance yet still allows for flexibility to develop the application as desired.
 
 DBIx::Class is a Perl object relational mapper (ORM).  It is used to map objects created in the GUI directly to rows in the database.  It provides a clean interface for constructing SQL queries and persistently storing objects and has been used alongside Catalyst in the development of the GUI.
+
+The reports are generated dynamically from data in the Database and use the JavaScript HighCharts API to improve the visualisation of the results as seen in Figure ~\ref{fig:report}.
+
+\begin{figure}[!ht]
+    \begin{center}
+        \includegraphics[scale=0.7]{images/report.png}    
+    \end{center}
+    \caption{Report Visualisation in GUI}
+    \label{fig:report}
+\end{figure}
 
 \subsection{Job Queue}
 The Job Queue is used to pass jobs between the GUI, the Crawler and the Attacker.  Without the Job Queue this whole communication process would be tightly coupled and, save multi-threading, would cause the GUI to lock up while components finished their tasks.
@@ -377,7 +389,7 @@ point\_of\_interest\_vulnerability\{ point\_of\_interest\_id, vulnerability\_id 
 The queries are generated using the module DBIx::Class which maps objects to rows in the database.  It allows query construction in the GUI as follows:
 
 \begin{lstlisting}{language=Perl}
-$website->find($id)->points_of_interest()
+$website->find($id)->points_of_interest();
 \end{lstlisting}
 
 \subsection{Testing}
