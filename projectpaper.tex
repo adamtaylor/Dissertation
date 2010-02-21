@@ -120,6 +120,7 @@ Project Norris is a web-based application that allows a user to input a URL of a
 The design of Project Norris has been broken down into a number of core components.  The user interface of Project Norris is handled by an model-view-controller (MVC) based web application.  There are then two main back-end components which do the heavy processing for the application.  These are the Attacker component and the Crawler component.
 
 The Web GUI interacts with the back-end components by placing jobs on another component, the Queue.
+
 The Attacker and Crawler are further broken down into two components each, one being a worker script which is continuously run that checks for new jobs on the Queue and the other component being the code that is run by the script when a job is found.
 
 Many of the components also rely on another component, the Database. This is to allow data to be stored persistently rather than only in-memory, i.e. all the data related to vulnerabilities found in web applications are stored in the database.
@@ -129,7 +130,7 @@ The Queue component relies heavily on the Database because when a job is added t
 The reason to separate the back-end from the front-end of the web application is to deal with the issue of cohesion and coupling, and performance and scalability. 
 
 \subsubsection{Web GUI}
-The Web GUI, or the front-end of the Project Norris web application, is designed using the model-view-controller (MVC) architectural pattern.
+The Web GUI, or the front-end of the Project Norris web application, is designed using the MVC architectural pattern.
 
 The various different views of the Web GUI are displayed to the users by the controllers retrieving any required data from any relevant models and then loading the relevant view and passing the data.
 
