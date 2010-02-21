@@ -129,15 +129,9 @@ The Queue component relies heavily on the Database because when a job is added t
 The reason to separate the back-end from the front-end of the web application is to deal with the issue of cohesion and coupling, and performance and scalability. 
 
 \subsubsection{Web GUI}
-The Web GUI, or the front-end of the Project Norris web application, is designed using the MVC architectural pattern.
+The Web GUI, or the front-end of the Project Norris web application, is designed using the model-view-controller (MVC) architectural pattern.
 
 The various different views of the Web GUI are displayed to the users by the controllers retrieving any required data from any relevant models and then loading the relevant view and passing the data.
-
-URLs map to controllers and methods in controllers in the following manner:
-
-http://baseurl.com/controller/method/param
-
-So http://baseurl.com/websites/view/1 would map to the controller Websites and the method view() passing in an ID of 1.  The page rendered would be dependent on the template loaded by the view() method.
 
 Views are simply template files, possibly with place holders for data and simple logic for dynamic code, rendered inside a global template file, with data being passed in via controllers.
 
