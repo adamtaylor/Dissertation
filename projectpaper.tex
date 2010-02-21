@@ -281,14 +281,6 @@ The attacking component is also responsible for storing data.  Every time it sta
 
 For any successful attacks a vulnerability is stored which is associated with a specific PointOfInterest (which is in turn associated with a Website).
 
-The database for storing data related to a website is as follows:
-
-A \emph{Website} contains a name and URL.
-A \emph{Website} has many \emph{PointsOfInterest} where a point of interest is a URL.
-A \emph{PointOfInterest} has many \emph{Vulnerabilities} where a \emph{Vulnerability} has a type and an input string.
-
-Two intermediary tables are used to normalise the many-to-many relationships: \emph{WebsitePointOfInterest} and \emph{PointOfInterestVulnerability}.
-
 The GUI is an simple web application that allows a user to add or delete websites, to initiate a new scan of a website (which means to place the URL onto the job queue for the crawler and attacker).
 
 The job queue uses another database which contains a table of jobs.  Worker scripts watch the database and pull off jobs if they are capable of performing the work.
@@ -348,7 +340,7 @@ The Crawler receives a URL from the GUI in the job it receives from the Queue.  
 
 It also performs some additional checks before following a URL: it makes sure that it only follows links to pages that are of content type `text/html',  it only follows URLs of pages on the same top level domain (TLD) as the initial URL and it treats http://example.com/about and http://example.com/about\#careers as the same URL to avoid excessively crawling the same page.
 
-While on a page it also looks for PointsOfInterest that can be passed to the Attacker.  If it finds a form on the page, it inserts a new job on the Queue with a reference to the form it found for the Attacker to perform XSS and SQLi attacks.  If it finds a URI fragment, such as, http://example.com/index.php?page=../home.php, it inserts a new job on the Queue with a reference to the URI for the Attacker to perform a directory traversal attack.
+While on a page it also looks for PointsOfInterest that can be passed to the Attacker.  If it finds a form on the page, it inserts a new job on the Queue with a reference to the form it found for the Attacker to perform XSS and SQLi attacks.  If it finds a URI with a query string, such as, http://example.com/index.php?page=../home.php, it inserts a new job on the Queue with a reference to the URI for the Attacker to perform a directory traversal attack.
 
 \subsection{Attacker}
 The Attacker component first checks to see whether it has received a URI or a Form PointOfInterest and stores the PointOfInterest in the Database for the GUI.  If it is a URI PointOfInterest it executes the directory traversal, fuzzy-based algorithm.  This works by attempting to access $<$\$input\_uri$>$../etc/passwd, then $<$\$input\_uri$>$../../etc/passwd and so on and looking, via regular expression, for the word `root' (as in the root user accout) in the HTTP Response Body returned from the server.  If it is found a Vulnerability is stored in the database for that particular PointOfInterest.
@@ -360,6 +352,27 @@ If it has been passed a Form PointofInterest from the Crawler it first executes 
 The SQLi injection algorithm works by inserting a single quote - ' - into all the input fields and attempts to work out if a server or database error was thrown in response.  This is done by checking the HTTP Response Header from the server to check whether or not it is in the 50x range - indicating an error - or looking for common database error phrases output by different database systems in the HTTP Response Body.  
 
 This is incomplete as sometimes false positives are found if certain phrases assumed to demonstrate SQLi vulnerabilities are present in the HTTP Response Body and also we do not have a full list of all the errors sent by all different types and versions of database systems.
+
+\subsection{Database}
+The database for storing data related to a website contains three primary tables:
+
+A \emph{Website} contains a name and URL.
+A \emph{Website} has many \emph{PointsOfInterest} where a point of interest is a URL.
+A \emph{PointOfInterest} has many \emph{Vulnerabilities} where a \emph{Vulnerability} has a type and an input string.
+
+Two intermediary tables are used to normalise the many-to-many relationships: \emph{WebsitePointOfInterest} and \emph{PointOfInterestVulnerability}.
+
+The specific table structures are as follows:
+
+websites\{ id, url, name \}
+
+points\_of\_interest\{ id, url \}
+
+vulnerabilities\{ id, type, input \}
+
+website\_point\_of\_interest\{ website\_id, point\_of\_interest\_id \}
+
+point\_of\_interest\_vulnerability\{ point\_of\_interest\_id, vulnerability\_id \}
 
 \subsection{Testing}
 The project has a number of system tests, implemented using the Test::More module which uses the Test Anything Protocol (TAP) to output simple text-based results.  This provides a means of ensuring the various front-end facing features of the tool are working as expected.
