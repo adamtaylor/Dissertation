@@ -306,11 +306,11 @@ Static Brute Forcing will take a list of known attack vectors, and permeate thro
 The pseudo-code for the algorithm is along the following lines:
 
 \begin{lstlisting}
-def StaticBruteForce( Form )     
+def StaticBruteForce( PointOfInterest )     
     <List> vectors;
     
     foreach (vector in vectors) { 
-        attackForm( vector );
+        attackPoint( vector );
     }
 end
 \end{lstlisting}
@@ -323,9 +323,9 @@ Fuzzy Brute Forcing dynamically generates potentially malicious input by generat
 The pseudo-code for the algorithm is along the following lines:
 
 \begin{lstlisting} 
-def FuzzyBruteForce( Form )
+def FuzzyBruteForce( PointOfInterest )
 	for (1..1000) { 		
-	    attackForm( fuzzyVector() ); 	
+	    attackPoint( fuzzyVector() ); 	
 	}
 end
 \end{lstlisting}
