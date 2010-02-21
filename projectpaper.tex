@@ -271,20 +271,6 @@ The general procedure for processing a URL is as follows:
     \item The user is then free to generate a report for any previously scanned websites in the GUI.  These reports are generated dynamically via data stored in the Database by the Attacker.
 \end{itemize}
 
-The crawler has been developed using a Breadth First Search algorithm.  It is passed a base URL and it then gets all the links on that page and adds them to a queue.  It then proceeds to dequeue one URL at a time and and get all the links on that page and then put them on the queue (unless any of them have already been visited - it maintains a hash table of URL =$>$ no. of times seen so it can quickly check whether or not a URL has been seen before).
-
-Parsing is done by using a mixture of Regular Expressions and the Perl web browsing module WWW::Mechanize.
-
-The attacking component is passed an object representing a form (HTML::Form) from the crawler, and then proceeds to input different attack vectors, submit the form and parse the HTTP Response Body or Header, sent from the server, to see whether or not the attack was successful.
-
-The attacking component is also responsible for storing data.  Every time it starts a job it adds information about the job into the database so in the GUI every point of possible vulnerability (PointOfInterest) is reportable. 
-
-For any successful attacks a vulnerability is stored which is associated with a specific PointOfInterest (which is in turn associated with a Website).
-
-
-
-The job queue uses another database which contains a table of jobs.  Worker scripts watch the database and pull off jobs if they are capable of performing the work.
-
 \subsection{Algorithms}
 There are two vulnerability detection algorithms in Project Norris.  Both are fairly primitive and follow a similar work flow:
 
@@ -348,6 +334,12 @@ The Queue is implemented using a Perl module called TheSchwartz, which uses the 
 The Crawler and the Attacker and then started up and continuously poll the database/queue looking for new jobs which they can perform, once they are complete they then look for more jobs.
 
 \subsection{Crawler}
+The crawler has been developed using a Breadth First Search algorithm.  It is passed a base URL and it then gets all the links on that page and adds them to a queue.  It then proceeds to dequeue one URL at a time and and get all the links on that page and then put them on the queue (unless any of them have already been visited - it maintains a hash table of URL =$>$ no. of times seen so it can quickly check whether or not a URL has been seen before).
+
+Parsing is done by using a mixture of Regular Expressions and the Perl web browsing module WWW::Mechanize.
+
+%todo merge ...
+
 The Crawler receives a URL from the GUI in the job it receives from the Queue.  It then initialises a queue of its own with the initial URL on and enters a while loop, whose precondition is that the queue has at least one item on it.  The Crawler then proceeds to find every link on that page using the Perl module WWW::Mechanize.  As well as the queue it maintains a hash of \{ URL =$>$ no. of times seen \}.  For each link it finds on each page it checks whether or not it exists in the hash, if not it adds that link to the queue and if so it simply increments the count of the number of times it has been seen.
 
 It also performs some additional checks before following a URL: it makes sure that it only follows links to pages that are of content type `text/html',  it only follows URLs of pages on the same top level domain (TLD) as the initial URL and it treats http://example.com/about and http://example.com/about\#careers as the same URL to avoid excessively crawling the same page.
@@ -355,6 +347,14 @@ It also performs some additional checks before following a URL: it makes sure th
 While on a page it also looks for PointsOfInterest that can be passed to the Attacker.  If it finds a form on the page, it inserts a new job on the Queue with a reference to the form it found for the Attacker to perform XSS and SQLi attacks.  If it finds a URI with a query string, such as, http://example.com/index.php?page=../home.php, it inserts a new job on the Queue with a reference to the URI for the Attacker to perform a directory traversal attack.
 
 \subsection{Attacker}
+The attacking component is passed an object representing a form (HTML::Form) from the crawler, and then proceeds to input different attack vectors, submit the form and parse the HTTP Response Body or Header, sent from the server, to see whether or not the attack was successful.
+
+The attacking component is also responsible for storing data.  Every time it starts a job it adds information about the job into the database so in the GUI every point of possible vulnerability (PointOfInterest) is reportable. 
+
+For any successful attacks a vulnerability is stored which is associated with a specific PointOfInterest (which is in turn associated with a Website).
+
+%todo merge ...
+
 The Attacker component first checks to see whether it has received a URI or a Form PointOfInterest and stores the PointOfInterest in the Database for the GUI.  If it is a URI PointOfInterest it executes the directory traversal, fuzzy-based algorithm.  This works by attempting to access $<$\$input\_uri$>$../etc/passwd, then $<$\$input\_uri$>$../../etc/passwd and so on and looking, via regular expression, for the word `root' (as in the root user accout) in the HTTP Response Body returned from the server.  If it is found a Vulnerability is stored in the database for that particular PointOfInterest.
 
 This can return false positives and only works on unix based servers.
