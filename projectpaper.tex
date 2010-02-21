@@ -242,10 +242,56 @@ Data flows through Project Norris in the way illustrated in Figure ~\ref{fig:dat
 \begin{itemize}
     \item A URL is inserted into the Queue and a Website object is created and stored in the database
     \item The Crawler dequeues the URL and proceeds to crawl and parse the whole domain.  Any PointsOfInterest it finds are inserted into the Queue.
-    \item The Attacker dequeues any PointsOfInterest in the Queue and proceeds to attack the PointOfInterest.  The PointsOfInterest themselves are inserted into the database by creating PointOfInterest objects and any successful attacks are stored as Vulnerability objects in the database.  
+    \item The Attacker dequeues any PointsOfInterest in the Queue and proceeds to attack the PointOfInterest.  The PointsOfInterest themselves are inserted into the database by creating PointOfInterest objects and any successful attacks are stored as Vulnerability objects in the database.
 \end{itemize}
 
 So one Website can have many PointsOfInterest, and one PointOfInterest can have many Vulnerabilities.
+
+\subsubsection{Limitations}
+Project Norris is a web application and this may limit it’s usefulness to the average end user, having said that, it has been written as a “hosted solution”.
+
+Project Norris also suffers a limitation of not looking at every aspect of a website that may be vulnerable.  The focus is completely on input forms, whereas cookies and query strings may also contain vulnerabilities.
+
+The detection of SQL Injection attacks is also limited by the fact that different web and SQL servers throw different errors on receipt of invalid SQL statements.  This means that the Attacker will have to be “trained” to understand what types of responses likely indicate an SQL Injection vulnerability, however this is likely to be imperfect.
+
+\section{Implementation}
+The general procedure for processing a URL is as follows:
+
+\begin{itemize}
+    \item A user adds a Website to the system.
+    \item A user chooses to scan a particular Website for vulnerabilities.
+    \item The URL of the Website is placed onto the Queue by the GUI.
+    \item The Crawler sees the URL on the Queue and dequeues the job.
+    \item The Crawler establishes its own queue of urls, starting with the URL from in the job.
+    \item The Crawler then proceeds to parse the page finding every link (and maintains another data structure, a hash, to check for unique URLs) and adds them to its internal queue.
+    \item The Crawler also looks for any PointsOfInterest on the page and if it finds any adds it to the Queue as a job for the Attacker.
+    \item The Crawler then dequeues the next URL from its internal queue and continues through this loop until there are no URLs left on the queue to process.
+    \item When the Attacker dequeues a job, it first inserts the PointOfInterest into the Database.
+    \item The Attacker then runs through the various vulnerability detection algorithms and if it finds any vulnerabilities it stores them in the Database.
+    \item The user is then free to generate a report for any previously scanned websites in the GUI.  These reports are generated dynamically via data stored in the Database by the Attacker.
+\end{itemize}
+
+The crawler has been developed using a Breadth First Search algorithm.  It is passed a base URL and it then gets all the links on that page and adds them to a queue.  It then proceeds to dequeue one URL at a time and and get all the links on that page and then put them on the queue (unless any of them have already been visited - it maintains a hash table of URL =$>$ no. of times seen so it can quickly check whether or not a URL has been seen before).
+
+Parsing is done by using a mixture of Regular Expressions and the Perl web browsing module WWW::Mechanize.
+
+The attacking component is passed an object representing a form (HTML::Form) from the crawler, and then proceeds to input different attack vectors, submit the form and parse the HTTP Response Body or Header, sent from the server, to see whether or not the attack was successful.
+
+The attacking component is also responsible for storing data.  Every time it starts a job it adds information about the job into the database so in the GUI every point of possible vulnerability (PointOfInterest) is reportable. 
+
+For any successful attacks a vulnerability is stored which is associated with a specific PointOfInterest (which is in turn associated with a Website).
+
+The database for storing data related to a website is as follows:
+
+A \emph{Website} contains a name and URL.
+A \emph{Website} has many \emph{PointsOfInterest} where a point of interest is a URL.
+A \emph{PointOfInterest} has many \emph{Vulnerabilities} where a \emph{Vulnerability} has a type and an input string.
+
+Two intermediary tables are used to normalise the many-to-many relationships: \emph{WebsitePointOfInterest} and \emph{PointOfInterestVulnerability}.
+
+The GUI is an simple web application that allows a user to add or delete websites, to initiate a new scan of a website (which means to place the URL onto the job queue for the crawler and attacker).
+
+The job queue uses another database which contains a table of jobs.  Worker scripts watch the database and pull off jobs if they are capable of performing the work.
 
 \subsection{Algorithms}
 There are two vulnerability detection algorithms in Project Norris.  Both are fairly primitive and follow a similar work flow:
@@ -284,36 +330,6 @@ def FuzzyBruteForce( Form )
 end
 \end{lstlisting}
 This algorithm will be used to look at a different set of vulnerabilities: buffer overflow vulnerabilities and directory traversal vulnerabilities.
-
-\subsubsection{Limitations}
-Project Norris is a web application and this may limit it’s usefulness to the average end user, having said that, it has been written as a “hosted solution”.
-
-Project Norris also suffers a limitation of not looking at every aspect of a website that may be vulnerable.  The focus is completely on input forms, whereas cookies and query strings may also contain vulnerabilities.
-
-The detection of SQL Injection attacks is also limited by the fact that different web and SQL servers throw different errors on receipt of invalid SQL statements.  This means that the Attacker will have to be “trained” to understand what types of responses likely indicate an SQL Injection vulnerability, however this is likely to be imperfect.
-
-\section{Implementation}
-The crawler has been developed using a Breadth First Search algorithm.  It is passed a base URL and it then gets all the links on that page and adds them to a queue.  It then proceeds to dequeue one URL at a time and and get all the links on that page and then put them on the queue (unless any of them have already been visited - it maintains a hash table of URL =$>$ no. of times seen so it can quickly check whether or not a URL has been seen before).
-
-Parsing is done by using a mixture of Regular Expressions and the Perl web browsing module WWW::Mechanize.
-
-The attacking component is passed an object representing a form (HTML::Form) from the crawler, and then proceeds to input different attack vectors, submit the form and parse the HTTP Response Body or Header, sent from the server, to see whether or not the attack was successful.
-
-The attacking component is also responsible for storing data.  Every time it starts a job it adds information about the job into the database so in the GUI every point of possible vulnerability (PointOfInterest) is reportable. 
-
-For any successful attacks a vulnerability is stored which is associated with a specific PointOfInterest (which is in turn associated with a Website).
-
-The database for storing data related to a website is as follows:
-
-A \emph{Website} contains a name and URL.
-A \emph{Website} has many \emph{PointsOfInterest} where a point of interest is a URL.
-A \emph{PointOfInterest} has many \emph{Vulnerabilities} where a \emph{Vulnerability} has a type and an input string.
-
-Two intermediary tables are used to normalise the many-to-many relationships: \emph{WebsitePointOfInterest} and \emph{PointOfInterestVulnerability}.
-
-The GUI is an simple web application that allows a user to add or delete websites, to initiate a new scan of a website (which means to place the URL onto the job queue for the crawler and attacker).
-
-The job queue uses another database which contains a table of jobs.  Worker scripts watch the database and pull off jobs if they are capable of performing the work.
 
 \subsection{Web GUI Implementation}
 The GUI has been developed using the Catalyst web framework.  Catalyst is a Perl model-view-controller (MVC) based framework.  It provides helpers for many common tasks in web application development, provides architectural guidance yet still allows for flexibility to develop the application as desired.
