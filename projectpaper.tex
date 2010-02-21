@@ -374,6 +374,12 @@ website\_point\_of\_interest\{ website\_id, point\_of\_interest\_id \}
 
 point\_of\_interest\_vulnerability\{ point\_of\_interest\_id, vulnerability\_id \}
 
+The queries are generated using the module DBIx::Class which maps objects to rows in the database.  It allows query construction in the GUI as follows:
+
+\begin{lstlisting}{language=Perl}
+$website->find($id)->points_of_interest()
+\end{lstlisting}
+
 \subsection{Testing}
 The project has a number of system tests, implemented using the Test::More module which uses the Test Anything Protocol (TAP) to output simple text-based results.  This provides a means of ensuring the various front-end facing features of the tool are working as expected.
 
