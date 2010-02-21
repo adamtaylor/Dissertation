@@ -279,7 +279,7 @@ For a given form location: send malicious data, analyse the server response or t
 The difference between the two algorithms is the method of generating the malicious data to send.
 
 \subsubsection{Static Brute Forcing}
-Static Brute Forcing will take a list of known attack vectors, and permeate through the list until one succeeds or none of the attacks succeed.  The list of attack vectors will be generated from the XSS Cheat Sheet 
+Static Brute Forcing will take a list of known attack vectors, and permeate through the list until one succeeds or none of the attacks succeed.  The list of attack vectors will be generated from the XSS Cheat Sheet.
 
 The pseudo-code for the algorithm is along the following lines:
 
@@ -310,7 +310,15 @@ end
 This algorithm will be used to look at a different set of vulnerabilities: buffer overflow vulnerabilities and directory traversal vulnerabilities.
 
 \subsection{Web GUI Implementation}
-The GUI is an simple web application that allows a user to add or delete websites, to initiate a new scan of a website (which means to place the URL onto the job queue for the crawler and attacker) and to view reports.
+The GUI is an simple web application that allows a user to add or delete websites, to initiate a new scan of a website (which means to place the URL onto the job queue for the crawler and attacker) and to view reports.  A screenshot can be seen in Figure ~\ref{fig:gui}.
+
+\begin{figure}[!ht]
+    \begin{center}
+        \includegraphics{images/gui.png}    
+    \end{center}
+    \caption{GUI Screenshot}
+    \label{fig:gui}
+\end{figure}
 
 The GUI has been developed using the Catalyst web framework.  Catalyst is a Perl model-view-controller (MVC) based framework.  It provides helpers for many common tasks in web application development, provides architectural guidance yet still allows for flexibility to develop the application as desired.
 
@@ -329,7 +337,7 @@ The reports are generated dynamically from data in the Database and use the Java
 \subsection{Job Queue}
 The Job Queue is used to pass jobs between the GUI, the Crawler and the Attacker.  Without the Job Queue this whole communication process would be tightly coupled and, save multi-threading, would cause the GUI to lock up while components finished their tasks.
 
-The Queue is implemented using a Perl module called TheSchwartz, which uses the Database (MySQL 5) for storing specific jobs as well as meta data about which components can perform which tasks.
+The Queue is implemented using a Perl module called TheSchwartz, which uses the Database for storing specific jobs as well as meta data about which components can perform which tasks.
 
 The Crawler and the Attacker and then started up and continuously poll the database/queue looking for new jobs which they can perform, once they are complete they then look for more jobs.
 
@@ -366,7 +374,7 @@ The SQLi injection algorithm works by inserting a single quote - ' - into all th
 This is incomplete as sometimes false positives are found if certain phrases assumed to demonstrate SQLi vulnerabilities are present in the HTTP Response Body and also we do not have a full list of all the errors sent by all different types and versions of database systems.
 
 \subsection{Database}
-The database for storing data related to a website contains three primary tables:
+The database (MySQL 5) for storing data related to a website contains three primary tables:
 
 A \emph{Website} contains a name and URL.
 A \emph{Website} has many \emph{PointsOfInterest} where a point of interest is a URL.
@@ -389,7 +397,7 @@ point\_of\_interest\_vulnerability\{ point\_of\_interest\_id, vulnerability\_id 
 The queries are generated using the module DBIx::Class which maps objects to rows in the database.  It allows query construction in the GUI as follows:
 
 \begin{lstlisting}{language=Perl}
-$website->find($id)->points_of_interest();
+    $website->find($id)->points_of_interest();
 \end{lstlisting}
 
 \subsection{Testing}
