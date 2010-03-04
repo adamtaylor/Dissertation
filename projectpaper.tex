@@ -384,15 +384,20 @@ The project has a number of system tests, implemented using the Test::More modul
 The primary results where taking against a scan of the Damn Vulnerable Web Application (DVWA) an open source, PHP web application for security research and learning.
 
 \begin{center}
-    \begin{tabular}{ | l | r | }
-        \hline
-        Vulns Found & 4 \\ \hline
-        \% Found & 100 \\ \hline
-        Vulns Missed & 0 \\ \hline
-        \% Missed & 0 \\ \hline
-        False Positives & 3 \\ 
-        \hline
-    \end{tabular}
+    \begin{table}
+        \caption{DVWA Scan Results}
+        \begin{center}
+            \begin{tabular}{ | l | r | }
+                \hline
+                Vulns Found & 4 \\ \hline
+                \% Found & 100 \\ \hline
+                Vulns Missed & 0 \\ \hline
+                \% Missed & 0 \\ \hline
+                False Positives & 3 \\ 
+                \hline
+            \end{tabular}
+        \end{center}
+    \end{table}
 \end{center}
 
 Project Norris reported 7 vulnerabilities found against 10 points of interest.  These were 3 SQLi vulnerabilities, 2 directory traversal vulnerabilities and 2 XSS vulnerabilities.
@@ -411,16 +416,38 @@ It is important to note that while false positives were found, all the vulnerabi
 After testing the tool against DVWA it was then sent out `into the wild' and tested against various security scanner vendor's test web applications.  Again these are deliberately insecure applications, which are a good test of the accuracy of the tool.  
 
 \begin{center}
-    \begin{tabular}{ | l | c | c | c | c | c | }
-        \hline
-        Site & Vulns Found & \% Found & Vulns Missed & \% Missed & False Positives  \\ \hline
-        Acunetix AspNet & 0 & 0 & 0 & 0 & 0 \\ \hline
-        Acunetix TestPHP & 0 & 0 & 0 & 0 & 0 \\ \hline
-        Cenzic Crackme & 0 & 0 & 0 & 0 & 0 \\ \hline
-        HP zerowebappsecurity & 0 & 0 & 0 & 0 & 0 \\ \hline
-        NTO Webscantest & 0 & 0 & 0 & 0 & 0 \\
-        \hline
-    \end{tabular}
+    \begin{table}
+        \caption{Overall Scan Results}
+        \begin{center}
+            \begin{tabular}{ | l | c | c | c | c | c | }
+                \hline
+                Site & Vulns Found & \% Found & Vulns Missed & \% Missed & False Positives  \\ \hline
+                Acunetix AspNet & 0 & 0 & 7 & 0 & 5 \\ \hline
+                Acunetix TestPHP & 0 & 0 & 28 & 0 & 1 \\ \hline
+                Cenzic Crackme & 0 & 0 & 17 & 0 & 0 \\ \hline
+                HP zerowebappsecurity & 0 & 0 & 31 & 0 & 6 \\ \hline
+                NTO Webscantest & 0 & 0 & 47 & 0 & 0 \\
+                \hline
+            \end{tabular}
+        \end{center}
+    \end{table}
+\end{center}
+
+\begin{center}
+    \begin{table}
+        \caption{Acunetix AspNet Scan Result}
+        \begin{center}
+            \begin{tabular}{ | l | c | c | }
+                \hline
+                Status & Vulns Type & \% File \\ \hline
+                Verified & XSS & /search.aspx \\ \hline
+                Verified & XSS & /search.aspx \\ \hline
+                Verified & XSS & /search.aspx \\ \hline
+                Verified & XSS & /search.aspx \\ 
+                \hline
+            \end{tabular}
+        \end{center}
+    \end{table}
 \end{center}
 
 \section{Evaluation}
