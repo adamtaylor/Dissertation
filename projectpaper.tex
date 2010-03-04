@@ -413,7 +413,7 @@ This suggests a false positive ratio of 3:7 - we can be just over 50\% sure in t
 It is important to note that while false positives were found, all the vulnerabilities present, that the tool can detect, were also found.
 
 \subsection{Secondary Results}
-After testing the tool against DVWA it was then sent out `into the wild' and tested against various security scanner vendor's test web applications.  Again these are deliberately insecure applications, which are a good test of the accuracy of the tool.  
+After testing the tool against DVWA it was then sent out `into the wild' and tested against various security scanner vendor's test web applications.  Again these are deliberately insecure applications, which are a good test of the accuracy of the tool.  An overview of the results is presented followed by more detailed results for each individual application.
 
 \begin{center}
     \begin{table}
@@ -426,6 +426,7 @@ After testing the tool against DVWA it was then sent out `into the wild' and tes
                 Acunetix TestPHP & 0 & 0 & 28 & 0 & 1 \\ \hline
                 Cenzic Crackme & 0 & 0 & 17 & 0 & 0 \\ \hline
                 HP zerowebappsecurity & 0 & 0 & 31 & 0 & 6 \\ \hline
+                IBM Testfire & 0 & 0 & 24 & 0 & 4 \\ \hline
                 NTO Webscantest & 0 & 0 & 47 & 0 & 0 \\
                 \hline
             \end{tabular}
@@ -436,6 +437,91 @@ After testing the tool against DVWA it was then sent out `into the wild' and tes
 \begin{center}
     \begin{table}
         \caption{Acunetix AspNet Scan Result}
+        \begin{center}
+            \begin{tabular}{ | l | c | c | }
+                \hline
+                Status & Vulns Type & \% File \\ \hline
+                Verified & XSS & /search.aspx \\ \hline
+                Verified & XSS & /search.aspx \\ \hline
+                Verified & XSS & /search.aspx \\ \hline
+                Verified & XSS & /search.aspx \\ 
+                \hline
+            \end{tabular}
+        \end{center}
+    \end{table}
+\end{center}
+
+\begin{center}
+    \begin{table}
+        \caption{Acunetix TestPHP Scan Result}
+        \begin{center}
+            \begin{tabular}{ | l | c | c | }
+                \hline
+                Status & Vulns Type & \% File \\ \hline
+                Verified & XSS & /search.aspx \\ \hline
+                Verified & XSS & /search.aspx \\ \hline
+                Verified & XSS & /search.aspx \\ \hline
+                Verified & XSS & /search.aspx \\ 
+                \hline
+            \end{tabular}
+        \end{center}
+    \end{table}
+\end{center}
+
+\begin{center}
+    \begin{table}
+        \caption{Cenzic Crackme}
+        \begin{center}
+            \begin{tabular}{ | l | c | c | }
+                \hline
+                Status & Vulns Type & \% File \\ \hline
+                Verified & XSS & /search.aspx \\ \hline
+                Verified & XSS & /search.aspx \\ \hline
+                Verified & XSS & /search.aspx \\ \hline
+                Verified & XSS & /search.aspx \\ 
+                \hline
+            \end{tabular}
+        \end{center}
+    \end{table}
+\end{center}
+
+\begin{center}
+    \begin{table}
+        \caption{HP zerowebappsecurity Scan Result}
+        \begin{center}
+            \begin{tabular}{ | l | c | c | }
+                \hline
+                Status & Vulns Type & \% File \\ \hline
+                Verified & XSS & /search.aspx \\ \hline
+                Verified & XSS & /search.aspx \\ \hline
+                Verified & XSS & /search.aspx \\ \hline
+                Verified & XSS & /search.aspx \\ 
+                \hline
+            \end{tabular}
+        \end{center}
+    \end{table}
+\end{center}
+
+\begin{center}
+    \begin{table}
+        \caption{IBM Testfire Scan Result}
+        \begin{center}
+            \begin{tabular}{ | l | c | c | }
+                \hline
+                Status & Vulns Type & \% File \\ \hline
+                Verified & XSS & /search.aspx \\ \hline
+                Verified & XSS & /search.aspx \\ \hline
+                Verified & XSS & /search.aspx \\ \hline
+                Verified & XSS & /search.aspx \\ 
+                \hline
+            \end{tabular}
+        \end{center}
+    \end{table}
+\end{center}
+
+\begin{center}
+    \begin{table}
+        \caption{NTO Webscantest Scan Result}
         \begin{center}
             \begin{tabular}{ | l | c | c | }
                 \hline
