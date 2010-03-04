@@ -380,9 +380,16 @@ The project has a number of system tests, implemented using the Test::More modul
 
 \section{Results}
 
-this section presents the results of the solutions.  It should include information on experimental settings.  The results should demonstrate the claimed benefits/disadvantages of the proposed solutions.
+\subsection{Primary Results}
+The primary results where taking against a scan of the Damn Vulnerable Web Application (DVWA) an open source, PHP web application for security research and learning.
 
-This section should be between 2 to 3 pages in length.
+Project Norris reported 7 vulnerabilities found against 10 points of interest.  These were 3 SQLi vulnerabilities, 2 directory traversal vulnerabilities and 2 XSS vulnerabilities.
+
+Of the three SQLi vulnerabilities only one was a real SQLi vulnerability.  The other two were false positives from the liberal nature of trying to detect an SQL error in a page.  It was assumed that the words `sql' and `error' on a page would signify an SQL error.  However, sometimes these were present on random pages in the application.
+
+Of the two directory traversal vulnerabilities only one was a real directory traversal vulnerability.  Again, this was due to the liberal nature of trying to detect when an error occured.  Directory traversal vulnerabilities are presumed present when `root' is found in the returned page.  This is due to the speculation that the root user is always present in the /etc/passwd file on a unix based system, hence we must have found a vulnerability.
+
+Of the two XSS vulnerabilities found both were real XSS vulnerabilities.  The accuracy of the XSS detection is due to the accuracy in which they are assumed vulnerable.  An XSS vulnerability is only assumed apparent if the exact attack vector is found in the page returned.
 
 \section{Evaluation}
 The primary evaluation of the tool and hence, the algorithms, has been against a slightly modified version of the Damn Vulnerable Web Application.  This is a sample PHP based web application that anyone can freely obtain that has a number of security flaws embedded within.  It is for manual testing and understanding and learning about web application vulnerabilities.  It has been used in this case as a demo application for which to test and evaluate the tool against.
@@ -392,9 +399,30 @@ The modifications made were to remove the need to login as at present the Crawle
 \subsection{Comparison}
 
 \subsection{Performance}
+% todo: tabulate this data
+The Crawler of Project Norris was timed when crawling web applications of various sizes to see roughly how well it performs.  See Figure ~\ref{fig:performance}.
+The sites crawled contained 18, 163 and 834 pages respectively.  The time taken to crawl increases with the number of pages crawled.
+
+The pages crawled per second for each site is as follows:
+
+13.8
+0.8
+and
+1.3
+
+It's hard to draw any useful conclusions from this data as there are many factors effecting the crawl rate, other than simply the number of pages: network latency and the number of points of interest found (because then a job must be inserted into the queue/database) being the two major factors.
+
+
+\begin{figure}[!ht]
+    \begin{center}
+        \includegraphics[scale=0.6]{images/crawl_performance.png}    
+    \end{center}
+    \caption{Performance Graph of Project Norris' Crawler.}
+    \label{fig:performance}
+\end{figure}
 
 \subsection{Engineering Best Practices}
-While developing Project Norris software engineering \emph{principles} and \emph{best practices} have been followed where appropriate.  The tool was developed with iteration in mind, and was incrementally designed over a number of weeks, continuously testing and improving the components.
+The tool has been developed to demonstrate the use of the various attack algorithms, rather than to create a real-world usable tool.  To that end, human-computer interaction (HCI) considerations where not a high priority.  It is likely that an HCI expert would find many limitations in the usability of the tool but these issues will be left for future work.
 
 \section{Conclusions}
 
