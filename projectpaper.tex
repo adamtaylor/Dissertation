@@ -383,6 +383,18 @@ The project has a number of system tests, implemented using the Test::More modul
 \subsection{Primary Results}
 The primary results where taking against a scan of the Damn Vulnerable Web Application (DVWA) an open source, PHP web application for security research and learning.
 
+\begin{center}
+    \begin{tabular}{ | l | r | }
+        \hline
+        Vulns Found & 4 \\ \hline
+        \% Found & 100 \\ \hline
+        Vulns Missed & 0 \\ \hline
+        \% Missed & 0 \\ \hline
+        False Positives & 3 \\ 
+        \hline
+    \end{tabular}
+\end{center}
+
 Project Norris reported 7 vulnerabilities found against 10 points of interest.  These were 3 SQLi vulnerabilities, 2 directory traversal vulnerabilities and 2 XSS vulnerabilities.
 
 Of the three SQLi vulnerabilities only one was a real SQLi vulnerability.  The other two were false positives from the liberal nature of trying to detect an SQL error in a page.  It was assumed that the words `sql' and `error' on a page would signify an SQL error.  However, sometimes these were present on random pages in the application.
@@ -390,6 +402,26 @@ Of the three SQLi vulnerabilities only one was a real SQLi vulnerability.  The o
 Of the two directory traversal vulnerabilities only one was a real directory traversal vulnerability.  Again, this was due to the liberal nature of trying to detect when an error occured.  Directory traversal vulnerabilities are presumed present when `root' is found in the returned page.  This is due to the speculation that the root user is always present in the /etc/passwd file on a unix based system, hence we must have found a vulnerability.
 
 Of the two XSS vulnerabilities found both were real XSS vulnerabilities.  The accuracy of the XSS detection is due to the accuracy in which they are assumed vulnerable.  An XSS vulnerability is only assumed apparent if the exact attack vector is found in the page returned.
+
+This suggests a false positive ratio of 3:7 - we can be just over 50\% sure in the results returned by Project Norris.
+
+It is important to note that while false positives were found, all the vulnerabilities present, that the tool can detect, were also found.
+
+\subsection{Secondary Results}
+After testing the tool against DVWA it was then sent out `into the wild' and tested against various security scanner vendor's test web applications.  Again these are deliberately insecure applications, which are a good test of the accuracy of the tool.  
+
+\begin{center}
+    \begin{tabular}{ | l | c | c | c | c | c | }
+        \hline
+        Site & Vulns Found & \% Found & Vulns Missed & \% Missed & False Positives  \\ \hline
+        Acunetix AspNet & 0 & 0 & 0 & 0 & 0 \\ \hline
+        Acunetix TestPHP & 0 & 0 & 0 & 0 & 0 \\ \hline
+        Cenzic Crackme & 0 & 0 & 0 & 0 & 0 \\ \hline
+        HP zerowebappsecurity & 0 & 0 & 0 & 0 & 0 \\ \hline
+        NTO Webscantest & 0 & 0 & 0 & 0 & 0 \\
+        \hline
+    \end{tabular}
+\end{center}
 
 \section{Evaluation}
 The primary evaluation of the tool and hence, the algorithms, has been against a slightly modified version of the Damn Vulnerable Web Application.  This is a sample PHP based web application that anyone can freely obtain that has a number of security flaws embedded within.  It is for manual testing and understanding and learning about web application vulnerabilities.  It has been used in this case as a demo application for which to test and evaluate the tool against.
