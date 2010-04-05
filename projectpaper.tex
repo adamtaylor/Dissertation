@@ -421,13 +421,11 @@ After testing the tool against DVWA it was then sent out `into the wild' and tes
         \begin{center}
             \begin{tabular}{ | l | c | c | c | c | c | }
                 \hline
-                Site & Vulns Found & \% Found & Vulns Missed & \% Missed & False Positives  \\ \hline
-                Acunetix AspNet & 0 & 0 & 7 & 0 & 5 \\ \hline
-                Acunetix TestPHP & 0 & 0 & 28 & 0 & 1 \\ \hline
-                Cenzic Crackme & 0 & 0 & 17 & 0 & 0 \\ \hline
-                HP zerowebappsecurity & 0 & 0 & 31 & 0 & 6 \\ \hline
-                IBM Testfire & 0 & 0 & 24 & 0 & 4 \\ \hline
-                NTO Webscantest & 0 & 0 & 47 & 0 & 0 \\
+                Site & Vuln Found & \% Found & Vulns Missed & \% Missed & False Positives  \\ \hline
+                Acunetix AspNet & 2 & 40 & 3 & 60 & 5 \\ \hline
+                Acunetix TestPHP & 3 & 21 & 10 & 79 & 0 \\ \hline
+                HP zerowebappsecurity & 2 & 15 & 11 & 85 & 3 \\ \hline
+                IBM Testfire & 3 & 20 & 12 & 80 & 1 \\ 
                 \hline
             \end{tabular}
         \end{center}
@@ -440,11 +438,22 @@ After testing the tool against DVWA it was then sent out `into the wild' and tes
         \begin{center}
             \begin{tabular}{ | l | c | c | }
                 \hline
-                Status & Vulns Type & \% File \\ \hline
-                Verified & XSS & /search.aspx \\ \hline
-                Verified & XSS & /search.aspx \\ \hline
-                Verified & XSS & /search.aspx \\ \hline
-                Verified & XSS & /search.aspx \\ 
+                Status & Vuln Type & File \\ \hline
+                False Positive & SQLi & /ReadNews.aspx?id=0\&NewsAd=ads\%2fdef.html \\ \hline
+                False Positive & SQLi & /default.aspx \\ \hline
+                False Positive & SQLi & /about.aspx \\ \hline
+                Duplicate False Positive & SQLi & /ReadNews.aspx?id=3\&NewsAd=ads\%2fdef.html \\ \hline
+                Verified & SQLi & /Comments.aspx?id=2 \\ \hline
+                Duplicate False Positive & SQLi & /ReadNews.aspx?id=0\&NewsAd=ads/def.html \\ \hline
+                Duplicate False Positive & SQLi & /ReadNews.aspx?id=3 \\ \hline
+                Duplicate False Positive & SQLi & /ReadNews.aspx?id=2 \\ \hline
+                False Positive & SQLi & /Signup.aspx \\ \hline
+                Duplicate False Positive & SQLi & /ReadNews.aspx?id=0 \\ \hline
+                Duplicate False Positive & SQLi & /ReadNews.aspx?id=2\&NewsAd=ads\%2fdef.html \\ \hline
+                Verified & SQLi & /login.aspx \\ \hline
+                Duplicate & SQLi & /Comments.aspx?id=0 \\ \hline
+                False Positive & SQLi & /Default.aspx \\ \hline
+                Duplicate & SQLi & /Comments.aspx?id=3 \\
                 \hline
             \end{tabular}
         \end{center}
@@ -457,28 +466,10 @@ After testing the tool against DVWA it was then sent out `into the wild' and tes
         \begin{center}
             \begin{tabular}{ | l | c | c | }
                 \hline
-                Status & Vulns Type & \% File \\ \hline
-                Verified & XSS & /search.aspx \\ \hline
-                Verified & XSS & /search.aspx \\ \hline
-                Verified & XSS & /search.aspx \\ \hline
-                Verified & XSS & /search.aspx \\ 
-                \hline
-            \end{tabular}
-        \end{center}
-    \end{table}
-\end{center}
-
-\begin{center}
-    \begin{table}
-        \caption{Cenzic Crackme}
-        \begin{center}
-            \begin{tabular}{ | l | c | c | }
-                \hline
-                Status & Vulns Type & \% File \\ \hline
-                Verified & XSS & /search.aspx \\ \hline
-                Verified & XSS & /search.aspx \\ \hline
-                Verified & XSS & /search.aspx \\ \hline
-                Verified & XSS & /search.aspx \\ 
+                Status & Vuln Type & File \\ \hline
+                Verified & XSS & /userinfo.php \\ \hline
+                Verified & SQLi & /listproducts.php?artist=3 \\ \hline
+                Verified & SQLi & /listproducts.php?cat=4 \\ 
                 \hline
             \end{tabular}
         \end{center}
@@ -491,11 +482,12 @@ After testing the tool against DVWA it was then sent out `into the wild' and tes
         \begin{center}
             \begin{tabular}{ | l | c | c | }
                 \hline
-                Status & Vulns Type & \% File \\ \hline
-                Verified & XSS & /search.aspx \\ \hline
-                Verified & XSS & /search.aspx \\ \hline
-                Verified & XSS & /search.aspx \\ \hline
-                Verified & XSS & /search.aspx \\ 
+                Status & Vuln Type & File \\ \hline
+                False Positive & Directory Traversal & /banklogin.asp?serviceName=../etc/passwd \\ \hline
+                False Positive & XSS & /pcomboindex.asp \\ \hline
+                False Positive & XSS & /login1.asp \\ \hline
+                Verified & SQLi & /login1.asp \\ \hline
+                Verified & SQLi & /rootlogin.asp \\
                 \hline
             \end{tabular}
         \end{center}
@@ -508,28 +500,11 @@ After testing the tool against DVWA it was then sent out `into the wild' and tes
         \begin{center}
             \begin{tabular}{ | l | c | c | }
                 \hline
-                Status & Vulns Type & \% File \\ \hline
+                Status & Vuln Type & File \\ \hline
                 Verified & XSS & /search.aspx \\ \hline
-                Verified & XSS & /search.aspx \\ \hline
-                Verified & XSS & /search.aspx \\ \hline
-                Verified & XSS & /search.aspx \\ 
-                \hline
-            \end{tabular}
-        \end{center}
-    \end{table}
-\end{center}
-
-\begin{center}
-    \begin{table}
-        \caption{NTO Webscantest Scan Result}
-        \begin{center}
-            \begin{tabular}{ | l | c | c | }
-                \hline
-                Status & Vulns Type & \% File \\ \hline
-                Verified & XSS & /search.aspx \\ \hline
-                Verified & XSS & /search.aspx \\ \hline
-                Verified & XSS & /search.aspx \\ \hline
-                Verified & XSS & /search.aspx \\ 
+                Verified & XSS & /survey\_complete.aspx \\ \hline
+                False Positive & XSS & /bank/login.aspx \\ \hline
+                Verified & SQLi & /bank/login.aspx \\ 
                 \hline
             \end{tabular}
         \end{center}
