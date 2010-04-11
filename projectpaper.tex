@@ -521,14 +521,26 @@ The modifications made were to remove the need to login as at present the Crawle
 \subsection{Performance}
 % todo: tabulate this data
 The Crawler of Project Norris was timed when crawling web applications of various sizes to see roughly how well it performs.  See Figure ~\ref{fig:performance}.
-The sites crawled contained 18, 163 and 834 pages respectively.  The time taken to crawl increases with the number of pages crawled.
+The sites crawled contained 163, 1298 and ~5000 pages respectively.  The time taken to crawl increases with the number of pages crawled.
 
-The pages crawled per second for each site is as follows:
+The pages crawled per second for each site can be seen in Table ~\ref{table:performance}.
 
-13.8
-0.8
-and
-1.3
+\begin{center}
+    \begin{table}
+        \caption{Crawler Performance}
+        \begin{center}
+            \begin{tabular}{ | l | c | c | }
+                \hline
+                \# Pages & Total Crawl Time (s) & Time Per Page (s) \\ \hline
+                163 & 196 & 1.20 \\ \hline
+                1298 & 1034 & 0.80 \\ \hline
+                4945 & 5316 & 0.93 \\ 
+                \hline
+            \end{tabular}
+        \end{center}
+        \label{table:performance}
+    \end{table}
+\end{center}
 
 It's hard to draw any useful conclusions from this data as there are many factors effecting the crawl rate, other than simply the number of pages: network latency and the number of points of interest found (because then a job must be inserted into the queue/database) being the two major factors.
 
