@@ -22,9 +22,16 @@
 \maketitle
 
 \begin{abstract}
-    These instructions give you guidelines for preparing the final paper.  DO NOT change any settings, such as margins and font sizes.  Just use this as a template and modify the contents into your final paper.  Do not cite references in the abstract.
-
-    The abstract must be a Structured Abstract with the headings {\bf Context/Background}, {\bf Aims}, {\bf Method}, {\bf Results}, and {\bf Conclusions}.  This section should not be longer than half of a page, and having no more than one or two sentences under each heading is advised.
+    {\bf Context/Background}
+    Web applications are increasing in complexity and prevalence in modern computing. Crucial data is stored and manipulate by web applications in systems such as online banking and online shopping.  At the same time, the number of vulnerabilities found in web applications is staggering, and can lead to the compromise confidential of data .
+    {\bf Aims}
+    The aim of this project are to develop and evaluate algorithms to automatically detect vulnerabilities in web applications.  Secondly, a web application based tool, will be created to demonstrate the algorithms in action and the real-world potential of the algorithms.
+    
+    {\bf Results}
+    Results indicate that the algorithms developed are somewhat successful at automatically detecting vulnerabilities in web applications.  Furthermore, the tool developed adequately demonstrates the algorithms, while being usable and achieving secondary goals of scalability and performance.
+    
+    {\bf Conclusions}
+    Project Norris (the tool developed) works well, and the results show the relative success of the algorithms developed.  Further work could be done to develop the algorithms and build upon the initial work done in this project.
 \end{abstract}
 
 \begin{keywords}
@@ -520,9 +527,8 @@ The modifications made were to remove the need to login as at present the Crawle
 Comparing my tool to experimental research, it is clear that some of the commercial tools are far superior. 
 
 \subsection{Performance}
-% todo: tabulate this data
 The Crawler of Project Norris was timed when crawling web applications of various sizes to see roughly how well it performs.  See Figure ~\ref{fig:performance}.
-The sites crawled contained 163, 1298 and ~5000 pages respectively.  The time taken to crawl increases with the number of pages crawled.
+The sites crawled contained ~100, ~1000 and ~5000 pages respectively.  The time taken to crawl increases with the number of pages crawled.
 
 The pages crawled per second for each site can be seen in Table ~\ref{table:performance}.
 
@@ -545,6 +551,7 @@ The pages crawled per second for each site can be seen in Table ~\ref{table:perf
 
 It's hard to draw any useful conclusions from this data as there are many factors effecting the crawl rate, other than simply the number of pages: network latency and the number of points of interest found (because then a job must be inserted into the queue/database) being the two major factors.
 
+%update with new data
 \begin{figure}[!ht]
     \begin{center}
         \includegraphics[scale=0.6]{images/crawl_performance.png}    
@@ -553,8 +560,31 @@ It's hard to draw any useful conclusions from this data as there are many factor
     \label{fig:performance}
 \end{figure}
 
-\subsection{Engineering Best Practices}
-The tool has been developed to demonstrate the use of the various attack algorithms, rather than to create a real-world usable tool.  To that end, human-computer interaction (HCI) considerations where not a high priority.  It is likely that an HCI expert would find many limitations in the usability of the tool but these issues will be left for future work.
+Scalability was an important design issue when designing and building Project Norris.  The following is a performance analysis of the attacking component, which can scale up.
+
+\begin{center}
+    \begin{table}
+        \caption{Crawler Performance}
+        \begin{center}
+            \begin{tabular}{ | l | c | c | c | }
+                \hline
+                \# Pages & Total Crawl Time (s) & \# of Attacking Components & Total Attack Time (s)  \\ \hline
+                162 & 175 & 1 & 52 \\ \hline
+                1294 & 811 & 1 & 101 \\ \hline
+                4945 & 5316 & 1 & na \\ \hline
+                161 & 213 & 3 & 47 \\ \hline
+                1294 & 1655 & 3 & 59 \\ \hline
+                4945 & 5316 & 1 & na \\
+                \hline
+            \end{tabular}
+        \end{center}
+        \label{table:scalability}
+    \end{table}
+\end{center}
+
+As can be seen, in Table ~\ref{table:scalability}, when launching more instances of the attacking component, the total time taken to perform the attacks decreases.  Moreover, this isn't the best representation of the scalability of the application.  In fact, the application is more suited to performing multiple vulnerability analysis runs, by launching multiple instances of the crawling component, as well as the attacking component.
+
+% insert graph and analysis
 
 \section{Conclusions}
 
