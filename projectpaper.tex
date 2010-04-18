@@ -424,6 +424,8 @@ It is important to note that while false positives were found, all the vulnerabi
 \subsection{Secondary Results}
 After testing the tool against DVWA it was then sent out `into the wild' and tested against various security scanner vendor's test web applications.  Again these are deliberately insecure applications, which are a good test of the accuracy of the tool.  An overview of the results is presented followed by more detailed results for each individual application.
 
+The evaluation was based on unpublished research, comparing various commercial scanners, against the various test applications. %TODO reference
+
 \begin{center}
     \begin{table}
         \caption{Overall Scan Results}
@@ -526,7 +528,19 @@ The primary evaluation of the tool and hence, the algorithms, has been against a
 The modifications made were to remove the need to login as at present the Crawler is unable to login and follow pages behind authorisation protection.
 
 \subsection{Comparison}
-Comparing my tool to experimental research, it is clear that some of the commercial tools are far superior. 
+Comparing my tool to experimental research, it is clear that some of the commercial tools are far superior. It would appear at first glance, that Project Norris is worse than all the other tools tested, and this is true.
+
+However, some reasons can be given for the relative poor performance in the wild. Regarding XSS vulnerabilities, a common attack vector is:
+
+\begin{lstlisting}
+';alert(String.fromCharCode(88,83,83))//
+\';alert(String.fromCharCode(88,83,83))//
+";alert(String.fromCharCode(88,83,83))//
+\";alert(String.fromCharCode(88,83,83))//
+--></SCRIPT>">'><SCRIPT>alert(String.fromCharCode(88,83,83))</SCRIPT>
+\end{lstlisting}
+
+Regular Expressions have been the main method of checking whether or not an attack vector was successful and with all the special characters in the string it's proven impossible to match the string in the wild.  Had it been possible, a whole host of extra XSS vulnerabilities could be detected by the algorithms.
 
 \subsection{Performance}
 The Crawler of Project Norris was timed when crawling web applications of various sizes to see roughly how well it performs.  See Figure ~\ref{fig:performance}.
@@ -576,7 +590,7 @@ Scalability was an important design issue when designing and building Project No
                 4945 & 10911 & 1 & 325 \\ \hline
                 161 & 213 & 3 & 47 \\ \hline
                 1294 & 1655 & 3 & 59 \\ \hline
-                4945 & 5316 & 3 & na \\
+                4945 & 5316 & 3 & 134 \\
                 \hline
             \end{tabular}
         \end{center}
