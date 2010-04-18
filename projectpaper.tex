@@ -22,15 +22,17 @@
 \maketitle
 
 \begin{abstract}
+    
     {\bf Context/Background}
-    Web applications are increasing in complexity and prevalence in modern computing. Crucial data is stored and manipulate by web applications in systems such as online banking and online shopping.  At the same time, the number of vulnerabilities found in web applications is staggering, and can lead to the compromise confidential of data .
-    {\bf Aims}
+    Web applications are increasing in complexity and prevalence in modern computing. Crucial data is stored and manipulate by web applications in systems such as online banking and online shopping.  At the same time, the number of vulnerabilities found in web applications is staggering, and can lead to the compromise confidential of data.
+    
+    {\bf Aims:}
     The aim of this project are to develop and evaluate algorithms to automatically detect vulnerabilities in web applications.  Secondly, a web application based tool, will be created to demonstrate the algorithms in action and the real-world potential of the algorithms.
     
-    {\bf Results}
+    {\bf Results:}
     Results indicate that the algorithms developed are somewhat successful at automatically detecting vulnerabilities in web applications.  Furthermore, the tool developed adequately demonstrates the algorithms, while being usable and achieving secondary goals of scalability and performance.
     
-    {\bf Conclusions}
+    {\bf Conclusions:}
     Project Norris (the tool developed) works well, and the results show the relative success of the algorithms developed.  Further work could be done to develop the algorithms and build upon the initial work done in this project.
 \end{abstract}
 
@@ -571,10 +573,10 @@ Scalability was an important design issue when designing and building Project No
                 \# Pages & Total Crawl Time (s) & \# of Attacking Components & Total Attack Time (s)  \\ \hline
                 162 & 175 & 1 & 52 \\ \hline
                 1294 & 811 & 1 & 101 \\ \hline
-                4945 & 5316 & 1 & na \\ \hline
+                4945 & 10911 & 1 & 325 \\ \hline
                 161 & 213 & 3 & 47 \\ \hline
                 1294 & 1655 & 3 & 59 \\ \hline
-                4945 & 5316 & 1 & na \\
+                4945 & 5316 & 3 & na \\
                 \hline
             \end{tabular}
         \end{center}
@@ -582,7 +584,9 @@ Scalability was an important design issue when designing and building Project No
     \end{table}
 \end{center}
 
-As can be seen, in Table ~\ref{table:scalability}, when launching more instances of the attacking component, the total time taken to perform the attacks decreases.  Moreover, this isn't the best representation of the scalability of the application.  In fact, the application is more suited to performing multiple vulnerability analysis runs, by launching multiple instances of the crawling component, as well as the attacking component.
+As can be seen, in Table ~\ref{table:scalability}, when launching more instances of the attacking component, the total time taken to perform the attacks decreases.  However, this isn't the best representation of the scalability of the application.  In fact, the application is more suited to performing multiple vulnerability analysis runs, by launching multiple instances of the crawling component, as well as the attacking component.  
+
+This is because there are likely to be more concurrent jobs for the attacking components by performing multiple scans, rather than from scanning one site and running multiple attacking components.  Crawling one site, large or small, will not necessarily result in a large succession of jobs for the attacker being generated, and the extra attacking components may be sitting idle, and therefore not demonstrating the scalability of the system.
 
 % insert graph and analysis
 
