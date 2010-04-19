@@ -413,7 +413,7 @@ Project Norris reported 7 vulnerabilities found against 10 points of interest.  
 
 Of the three SQLi vulnerabilities only one was a real SQLi vulnerability.  The other two were false positives from the liberal nature of trying to detect an SQL error in a page.  It was assumed that the words `sql' and `error' on a page would signify an SQL error.  However, sometimes these were present on random pages in the application.
 
-Of the two directory traversal vulnerabilities only one was a real directory traversal vulnerability.  Again, this was due to the liberal nature of trying to detect when an error occured.  Directory traversal vulnerabilities are presumed present when `root' is found in the returned page.  This is due to the speculation that the root user is always present in the /etc/passwd file on a unix based system, hence we must have found a vulnerability.
+Of the two directory traversal vulnerabilities only one was a real directory traversal vulnerability.  Again, this was due to the liberal nature of trying to detect when an error occurred.  Directory traversal vulnerabilities are presumed present when `root' is found in the returned page.  This is due to the speculation that the root user is always present in the /etc/passwd file on a unix based system, hence we must have found a vulnerability.
 
 Of the two XSS vulnerabilities found both were real XSS vulnerabilities.  The accuracy of the XSS detection is due to the accuracy in which they are assumed vulnerable.  An XSS vulnerability is only assumed apparent if the exact attack vector is found in the page returned.
 
@@ -424,7 +424,7 @@ It is important to note that while false positives were found, all the vulnerabi
 \subsection{Secondary Results}
 After testing the tool against DVWA it was then sent out `into the wild' and tested against various security scanner vendor's test web applications.  Again these are deliberately insecure applications, which are a good test of the accuracy of the tool.  An overview of the results is presented followed by more detailed results for each individual application.
 
-The evaluation was based on unpublished research, comparing various commercial scanners, against the various test applications. %TODO reference
+The evaluation was based on unpublished research, comparing various commercial scanners, against the various test applications. \cite{Suto2010}
 
 \begin{center}
     \begin{table}
