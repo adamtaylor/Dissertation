@@ -24,18 +24,18 @@
 \begin{abstract}
     
     {\bf Background}
-    The rapid development life-cycle of web applications, encouraged by frameworks such as Ruby on Rails, leaves little time for security testing.  As a consequence security is often over looked in many web applications that are not security critical.
+    The rapid development life-cycle of web applications, encouraged by frameworks such as Ruby on Rails, leaves little time for security testing.  As a result security is often over looked in many web applications that are not security critical.
 
-    As a result, security vulnerabilities of various severity are prevalent in many web applications.  Manually enumerating every possible area of vulnerability in a web application is a time consuming activity and this is where automated vulnerability detection tools are of benefit.
+    Consequently, security vulnerabilities of various severity are prevalent in many web applications.  Manually enumerating every possible area of vulnerability in a web application is a time consuming activity and this is where automated vulnerability detection tools can be of benefit.
     
     {\bf Aims:}
-    The aim of this project are to develop and evaluate algorithms to automatically detect vulnerabilities in web applications.  Secondly, a web based tool, will be created to demonstrate the algorithms in action and the real-world potential of the algorithms.
+    The aim of this project is to develop and evaluate algorithms to automatically detect vulnerabilities in web applications.  Secondly, a web based tool, will be created to demonstrate the algorithms in action and the real-world potential of the algorithms.
     
     {\bf Results:}
     Results indicate that the algorithms developed are somewhat successful at automatically detecting vulnerabilities in web applications.  Furthermore, the tool developed adequately demonstrates the algorithms, while being usable and achieving secondary goals of scalability and performance.
     
     {\bf Conclusions:}
-    Project Norris (the tool developed) works well, and the results show the relative success of the algorithms developed.  Further work could be done to develop the algorithms and build upon the initial work done in this project.
+    Project Norris (the tool developed) works well, and the results show the relative success of the algorithms developed.  Subsequent work could be done to further develop and improve the algorithms now that a solid foundation is in place.
 \end{abstract}
 
 \begin{keywords}
@@ -49,9 +49,9 @@ Hypothetically, if the tool were fully complete, the purpose of the tool would b
 
 The motivation for the development of such a tool is the fact that it is prohibitively expensive to perform a manual vulnerability analysis of a web application, however, an automated tool can rapidly analyse a web application using several different attack methodologies much faster than a human.
 
-The Open Web Application Security Project (OWASP) maintain an annual list of the most prevalent vulnerabilities found in web applications. \cite{OWASP:2007:Online}.  The two vulnerabilities the algorithms and tool will be primarily addressing are Cross Site Scripting (XSS) and Injection Flaws, particularly SQL Injection (SQLi) flaws in our work.
+The Open Web Application Security Project (OWASP) maintain an annual list of the most prevalent vulnerabilities found in web applications. \cite{OWASP:2007:Online} The two vulnerabilities the algorithms and tool will be primarily addressing are Cross Site Scripting (XSS) and Injection Flaws, particularly SQL Injection (SQLi) flaws in our work.
 
-Almost half of all the vulnerabilities found in web applications were either XSS vulnerabilities or Injection Flaws, which is why these two vulnerabilities are the primary focus of this research. 
+Almost half of all the vulnerabilities found in web applications were either XSS vulnerabilities or Injection Flaws, which is why these two vulnerabilities are the primary focus of this research. \cite{OWASP:2007:Online}
 
 XSS vulnerabilities ``allows an attacker to manipulate parts of a Web page... By injecting malicious scripting code" \cite{Holz2006} which according to a report by CERT allows an attacker to ``run malicious code in a users browser with the privileges of a legitimate script originating from the legitimate web server". \cite{Rafail:2001:Online}
 
@@ -66,7 +66,7 @@ There are a number of different approaches to vulnerability discovery and preven
 Much of the automated vulnerability discovery work has been done by commercial companies, however, there are some free and/or open source implementations.
 
 \subsection{Static Analysis}
-Static analysis is a white box technique used to analyse source code for vulnerabilities.  The main limitation of static analysis tools is that they have to be rewritten for every different programming language and/or framework a web application can be written in, and so far, most of the work seems to have focussed only on PHP.  They also struggle to analyse dynamically included content.
+Static analysis is a white box technique used to analyse source code for vulnerabilities.  The main limitation of static analysis tools is that they have to be rewritten for every different programming language and/or framework a web application can be written in, and so far, most of the work seems to have focussed only on PHP.  Furthermore, often they struggle to analyse dynamically included content, meaning the PHP analysis is incomplete.
 
 Wasserman and Su worked on static analysis to detect XSS vulnerabilities using a mixture of tainted information flow and  string analysis and were able to provide effective checking algorithms. \cite{Wassermann2008}
 
@@ -86,7 +86,7 @@ SQLProb works in a similar manner to a web application firewall (WAF) and is qui
 Kirda et al. developed a proxy tool - Noxes - for end-users to sit between  web applications and the users’ browser to mitigate the effect of XSS vulnerabilities on end-users.  Noxes can be thought of as a personal web firewall for end-users. \cite{Kirda2006} Noxes is similar to the FireFox plugin NoScript \cite{NoScript:2010:Online} and suffers the same limitations in that it is extremely invasive to have to block or allow every single request from every new URI.  Noxes plays no role in discovering vulnerabilities in web applications, it is purely for protecting end users.
 
 \subsection{Automated Black Box Vulnerability Discovery}
-Automated black box vulnerability discovery tools look at a web application from a [malicious] user’s perspective, i.e. there is no source code analysis involved, and only look at the front-end of the web application.  Much of the research and developed tools have been undertaken by commercial organisations.
+Automated black box vulnerability discovery tools look at a web application from a [malicious] user’s perspective, i.e. there is no source code analysis involved, and only look at the front-end of the web application.  Much of the research, and the tools developed, has been undertaken by commercial organisations.
 
 WhiteHatSecurity have a commercial scanning tool named Sentinal \cite{WhiteHatSecurity:2010:Online}, HP have WebInspect, a commercial scanning tool \cite{HPWebInspect:2010:Online} and IBM have the Rational AppScan suite of commercial scanning tools \cite{IBM:2010:Online}. 
 
@@ -136,9 +136,9 @@ The Attacker and Crawler are further broken down into two components each, one b
 
 Many of the components also rely on another component, the Database. This is to allow data to be stored persistently rather than only in-memory, i.e. all the data related to vulnerabilities found in web applications are stored in the database.
 
-The Queue component relies heavily on the Database because when a job is added to the Queue it is actually inserted into the Database.  Consequently when the two worker scripts are asking the Queue if there are any available jobs the Queue actually just queries the database.
+The Queue component relies heavily on the Database because when a job is added to the Queue it is actually inserted into the Database.  Consequently when the two worker scripts are asking the Queue if there are any available jobs, the Queue actually just queries the database.
 
-The reason to separate the back-end from the front-end of the web application is to deal with the issue of cohesion and coupling, and performance and scalability. 
+The reason to separate the back-end from the front-end of the web application is to deal with the issue of cohesion and coupling, and performance and scalability.  %TODO refs / further explanation
 
 \subsubsection{Web GUI}
 The Web GUI, or the front-end of the Project Norris web application, is designed using the MVC architectural pattern.
@@ -174,7 +174,7 @@ The models in the Web GUI are backed by tables in the database, with an object-r
 There are three main tables used throughout the application:
 
 \begin{itemize}
-    \item{Websites - A website is a URL which a user enters that can then be scanned and have reports generated.}
+    \item{Websites - A website is a URL which a user enters to be scanned.}
     \item{PointsOfInterest - A PointOfInterest is any forms, or URL fragments that the crawler/parser finds when crawling the Website.  These are what are passed to the Attacker to look for vulnerabilities...}
     \item{Vulnerabilities - Any vulnerabilities found by the attacker are stored in the Vulnerability table.}
 \end{itemize}
@@ -186,7 +186,7 @@ The crawler has been designed to use a Breadth First Search algorithm.  It is pa
 
 The pages are parsed using regular expressions.  As well as looking for links it also looks for forms, which can be parsed to the Attacker.  Forms have been chosen as it is the obvious place where a [malicious] user can submit input to the application.  The URI of the page is also checked to see whether it contains a query string, if so, this is also added to the Queue for the Attacker as it suggests the possibility of a file inclusion/directory traversal vulnerability.
 
-The following activity diagram shows how the crawler works:
+The activity diagram, Figure \ref{fig:crawler}, shows how the crawler works.
 
 \begin{figure}[!ht]
     \begin{center}
@@ -197,7 +197,7 @@ The following activity diagram shows how the crawler works:
 \end{figure}
 
 \subsubsection{Attacker}
-The attacking component is receives a job from the Queue with an object representing a PointOfInterest (found by the Crawler), and then proceeds to input different attack vectors, submit the form (or request the new URI) and parse the HTTP Response Body or Header, sent from the server, to see whether or not the attack was successful.
+The attacking component receives a job from the Queue with an object representing a PointOfInterest (found by the Crawler), and then proceeds to input different attack vectors, submit the form (or request the new URI) and parse the HTTP Response Body or Header, sent from the server, to see whether or not the attack was successful.
 
 The attacking component is also responsible for storing data.  Every time it starts a job it adds information about the job into the database so in the GUI every point of possible vulnerability (PointOfInterest) is reportable. 
 
@@ -213,6 +213,8 @@ The workflow between the various components is demonstrated in the sequence diag
     \caption{Sequence Diagram of Project Norris}
     \label{fig:workflow}
 \end{figure}
+
+% TODO this following section is a bit repeated
 
 When a user first visits Project Norris in a web browser, they are presented with an opportunity to add a URL to the system.  This then allows them to scan the URL/domain and later, view reports of vulnerabilities found.  If they choose to scan the URL the Web GUI then places the URL onto the Queue.
 
@@ -250,7 +252,7 @@ So one Website can have many PointsOfInterest, and one PointOfInterest can have 
 \subsubsection{Limitations}
 Project Norris is a web application and this may limit it’s usefulness to the average end user, having said that, it has been written as a “hosted solution”.
 
-Project Norris also suffers a limitation of not looking at every aspect of a website that may be vulnerable.  The focus is completely on input forms, whereas cookies and query strings may also contain vulnerabilities.
+Project Norris also suffers a limitation of not looking at every aspect of a website that may be vulnerable.  The focus is primarily on input forms, whereas cookies and query strings may also contain vulnerabilities.
 
 The detection of SQL Injection attacks is also limited by the fact that different web and SQL servers throw different errors on receipt of invalid SQL statements.  This means that the Attacker will have to be “trained” to understand what types of responses likely indicate an SQL Injection vulnerability, however this is likely to be imperfect.
 
@@ -274,7 +276,7 @@ The general procedure for processing a URL is as follows:
 \subsection{Algorithms}
 There are two vulnerability detection algorithms in Project Norris.  Both are fairly primitive and follow a similar work flow:
 
-For a given form location: send malicious data, analyse the server response or the HTTP Response Body of the generated page to ascertain whether the attack was successful.
+For a given form: send malicious data, analyse the server response or the HTTP Response Body of the generated page, and the HTTP Header, to ascertain whether the attack was successful.
 
 The difference between the two algorithms is the method of generating the malicious data to send.
 
@@ -293,7 +295,7 @@ def StaticBruteForce( PointOfInterest )
 end
 \end{lstlisting}
 
-This algorithm is primarily used for detecting XSS vulnerabilities but an even simpler version that inputs only one single-quote - ‘ - will be used to detect SQLi vulnerabilities.
+This algorithm is primarily used for detecting XSS vulnerabilities but an even simpler version that inputs only one single-quote - ' - will be used to detect SQLi vulnerabilities.
 
 \subsubsection{Fuzzy Brute Forcing}
 Fuzzy Brute Forcing dynamically generates potentially malicious input by generating a large amount of random data. \cite{Sutton2007}
@@ -307,10 +309,10 @@ def FuzzyBruteForce( PointOfInterest )
 	}
 end
 \end{lstlisting}
-This algorithm will be used to look at a different set of vulnerabilities: buffer overflow vulnerabilities and directory traversal vulnerabilities.
+This algorithm will be used to look at a different vulnerability: directory traversal vulnerabilities. Directory traversal vulnerabilities are where it is possible to display files on the server, in the browser that are outside of the normal web application files.  For example, one way of displaying pages is to pass a file name to a script, which then loads the file.  By passing a specially crafted file name, it may be possible to display files that are not intended for viewing (such as system or password files). % TODO reference
 
 \subsection{Web GUI Implementation}
-The GUI is an simple web application that allows a user to add or delete websites, to initiate a new scan of a website (which means to place the URL onto the job queue for the crawler and attacker) and to view reports.  A screenshot can be seen in Figure ~\ref{fig:gui}.
+The GUI is a simple web application that allows a user to add or delete websites, to initiate a new scan of a website (which means to place the URL onto the job queue for the crawler and attacker) and to view reports.  A screenshot can be seen in Figure ~\ref{fig:gui}.
 
 \begin{figure}[!ht]
     \begin{center}
@@ -319,6 +321,8 @@ The GUI is an simple web application that allows a user to add or delete website
     \caption{GUI Screenshot}
     \label{fig:gui}
 \end{figure}
+
+% TODO reference perl modules
 
 The GUI has been developed using the Catalyst web framework.  Catalyst is a Perl model-view-controller (MVC) based framework.  It provides helpers for many common tasks in web application development, provides architectural guidance yet still allows for flexibility to develop the application as desired.
 
@@ -346,10 +350,10 @@ The Crawler receives a URL from the GUI in the job it receives from the Queue.  
 
 It also performs some additional checks before following a URL: it makes sure that it only follows links to pages that are of content type `text/html',  it only follows URLs of pages on the same top level domain (TLD) as the initial URL and it treats http://example.com/about and http://example.com/about\#careers as the same URL to avoid excessively crawling the same page.
 
-While on a page it also looks for PointsOfInterest that can be passed to the Attacker.  If it finds a form on the page, it inserts a new job on the Queue with a reference to the form it found for the Attacker to perform XSS and SQLi attacks.  If it finds a URI with a query string, such as, http://example.com/index.php?page=../home.php, it inserts a new job on the Queue with a reference to the URI for the Attacker to perform a directory traversal attack.
+While on a page it also looks for PointsOfInterest that can be passed to the Attacker.  If it finds a form on the page, it inserts a new job on the Queue with a reference to the form it found for the Attacker to perform XSS and SQLi attacks.  If it finds a URI with a query string, such as, http://example.com/index.php?page=../home.php, it inserts a new job on the Queue with a reference to the URI for the Attacker to perform a directory traversal attack and a SQLi attack.
 
 \subsection{Attacker}
-The Attacker component first checks to see whether it has received a URI or a Form PointOfInterest and stores the PointOfInterest in the Database for the GUI.  If it is a URI PointOfInterest it executes the directory traversal, fuzzy-based algorithm.  This works by attempting to access $<$\$input\_uri$>$../etc/passwd, then $<$\$input\_uri$>$../../etc/passwd and so on and looking, via regular expression, for the word `root' (as in the root user accout) in the HTTP Response Body returned from the server.  If it is found a Vulnerability is stored in the database for that particular PointOfInterest.
+The Attacker component first checks to see whether it has received a URI or a Form PointOfInterest and stores the PointOfInterest in the Database for the GUI.  If it is a URI PointOfInterest it executes the directory traversal, fuzzy-based algorithm.  This works by attempting to access $<$\$input\_uri$>$../etc/passwd, then $<$\$input\_uri$>$../../etc/passwd and so on and looking, via regular expression, for the word `root' (as in the root user accout) in the HTTP Response Body returned from the server.  If it is found a Vulnerability is stored in the database for that particular PointOfInterest.  It also, tries the SQLi algorithm, explained shortly.
 
 This can return false positives and only works on unix based servers.
 
@@ -530,7 +534,7 @@ The primary evaluation of the tool and hence, the algorithms, has been against a
 The modifications made were to remove the need to login as at present the Crawler is unable to login and follow pages behind authorisation protection.
 
 \subsection{Comparison}
-Comparing my tool to experimental research, it is clear that some of the commercial tools are far superior. It would appear at first glance, that Project Norris is worse than all the other tools tested, and this is true.
+Comparing my tool to experimental research, it is clear that some of the commercial tools are far superior. It would appear at first glance, that Project Norris is worse than all the other tools tested, and this is true. \cite{Suto2010}
 
 However, some reasons can be given for the relative poor performance in the wild. Regarding XSS vulnerabilities, a common attack vector is:
 
@@ -543,6 +547,9 @@ However, some reasons can be given for the relative poor performance in the wild
 \end{lstlisting}
 
 Regular Expressions have been the main method of checking whether or not an attack vector was successful and with all the special characters in the string it's proven impossible to match the string in the wild.  Had it been possible, a whole host of extra XSS vulnerabilities could be detected by the algorithms.
+
+
+% TODO more analysis
 
 \subsection{Performance}
 The Crawler of Project Norris was timed when crawling web applications of various sizes to see roughly how well it performs.  See Figure ~\ref{fig:performance}.
@@ -569,10 +576,9 @@ The pages crawled per second for each site can be seen in Table ~\ref{table:perf
 
 It's hard to draw any useful conclusions from this data as there are many factors effecting the crawl rate, other than simply the number of pages: network latency and the number of points of interest found (because then a job must be inserted into the queue/database) being the two major factors.
 
-%update with new data
 \begin{figure}[!ht]
     \begin{center}
-        \includegraphics[scale=0.6]{images/crawl_performance.png}    
+        \includegraphics[scale=0.7]{images/crawl_performance.png}    
     \end{center}
     \caption{Performance Graph of Project Norris' Crawler.}
     \label{fig:performance}
@@ -582,17 +588,17 @@ Scalability was an important design issue when designing and building Project No
 
 \begin{center}
     \begin{table}
-        \caption{Crawler Performance}
+        \caption{Attacker Performance}
         \begin{center}
             \begin{tabular}{ | l | c | c | c | }
                 \hline
                 \# Pages & Total Crawl Time (s) & \# Attacking Components & Total Attack Time (s)  \\ \hline
                 162 & 175 & 1 & 52 \\ \hline
                 1294 & 811 & 1 & 101 \\ \hline
-                4945 & 10911 & 1 & 325 \\ \hline
+                4945 & 5911 & 1 & 325 \\ \hline
                 161 & 213 & 3 & 47 \\ \hline
                 1294 & 1655 & 3 & 59 \\ \hline
-                4945 & 5316 & 3 & 134 \\
+                4945 & 4643 & 3 & 134 \\
                 \hline
             \end{tabular}
         \end{center}
@@ -604,7 +610,16 @@ As can be seen, in Table ~\ref{table:scalability}, when launching more instances
 
 This is because there are likely to be more concurrent jobs for the attacking components by performing multiple scans, rather than from scanning one site and running multiple attacking components.  Crawling one site, large or small, will not necessarily result in a large succession of jobs for the attacker being generated, and the extra attacking components may be sitting idle, and therefore not demonstrating the scalability of the system.
 
-% insert graph and analysis
+Figure \ref{fig:performance2} shows the scalability data in an easier to digest manner.
+
+\begin{figure}[!ht]
+    \begin{center}
+        \includegraphics[scale=0.7]{images/attack_performance.png}    
+    \end{center}
+    \caption{Performance Graph of Project Norris' Attacker.}
+    \label{fig:performance2}
+\end{figure}
+% TODO insert analysis
 
 \section{Conclusions}
 
