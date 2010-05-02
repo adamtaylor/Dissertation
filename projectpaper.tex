@@ -31,6 +31,9 @@
     {\bf Aims:}
     The aim of this project is to develop and evaluate algorithms to automatically detect vulnerabilities in web applications.  Secondly, a web based tool, will be created to demonstrate the algorithms in action and the real-world potential of the algorithms.
     
+    {\bf Method:}
+    Use the dynamic scripting language Perl, to prototype and tweak vulnerability detection algorithms, and create a web-based interface and proof-of-concept tool, demonstrating the algorithms.
+    
     {\bf Results:}
     Results indicate that the algorithms developed are somewhat successful at automatically detecting vulnerabilities in web applications.  Furthermore, the tool developed adequately demonstrates the algorithms, while being usable and achieving secondary goals of scalability and performance.
     
@@ -120,7 +123,7 @@ Figure~\ref{fig:overview} provides an architectural overview of Project Norris, 
 
 \begin{figure}[!ht]
     \begin{center}
-        \includegraphics[scale=0.7]{images/overview_component_diagram.pdf}    
+        \includegraphics[scale=0.5]{images/overview_component_diagram.pdf}    
     \end{center}
     \caption{Component Diagram of Project Norris}
     \label{fig:overview}
@@ -190,7 +193,7 @@ The activity diagram, Figure \ref{fig:crawler}, shows how the crawler works.
 
 \begin{figure}[!ht]
     \begin{center}
-        \includegraphics[scale=0.7]{images/crawler_activity_diagram.pdf}    
+        \includegraphics[scale=0.5]{images/crawler_activity_diagram.pdf}    
     \end{center}
     \caption{Activity Diagram of Project Norris' Crawler}
     \label{fig:crawler}
@@ -546,9 +549,17 @@ However, some reasons can be given for the relative poor performance in the wild
 --></SCRIPT>">'><SCRIPT>alert(String.fromCharCode(88,83,83))</SCRIPT>
 \end{lstlisting}
 
-Regular Expressions have been the main method of checking whether or not an attack vector was successful and with all the special characters in the string it's proven impossible to match the string in the wild.  Had it been possible, a whole host of extra XSS vulnerabilities could be detected by the algorithms.
+Regular Expressions have been utilised as the main method of checking whether or not an attack vector was successful. With all the special characters in the attack vector it's proven impossible to match the string in the wild.  Had it been possible, a whole host of extra XSS vulnerabilities could be detected by the algorithm.
 
+The relatively high occurrence of false positives being reported can be explained by the imprecise detection of SQLi and directory traversal vulnerabilities.  Both algorithms `detect' vulnerabilities by looking for certain strings in the output page.  While these strings generally indicate a vulnerability, it's possible it could be present on a page anyway, consequently tricking the algorithm into thinking it has found a vulnerability when it hasn't.  For example, finding `SQL' and `Error' on a page is assumed to indicate an SQL based error message, and hence an SQLi vulnerability but could in fact be present in a page.
 
+Further research into all the possible error strings output by all the various different database engines may lead to a less error prone, and more thorough detection of SQLi vulnerabilities.
+
+Another area of improvement would be to improve the crawler by allowing the user to supply login credentials to crawl and analyse pages behind authentication mechanisms. Furthermore, currently the crawler ignores subdomains and only scans pages directly under the top-level domain (TLD), again it would be useful to be able to crawl these as well.  Also, there are many other types of vulnerabilities that the algorithms fail to address and further work could be undertaken to address a wider range of vulnerabilities.
+
+One strong positive of the tool, compared to other academic research, is the fact that it can be used against web applications of any type, written in any language, and it will do its best to uncover vulnerabilities in that application.  This is possible due to its `black box' nature.
+
+Furthermore, while it currently lags behind commercial tools, one must consider the fact that they are precisely that: commercial tools.  Many of these are state-of-the-art vulnerability detection and analysis tools, developed by commercial organisations, with much larger research and development resources.  With that in mind, Project Norris can be considered as a reasonable first attempt at developing a tool and algorithms.
 % TODO more analysis
 
 \subsection{Performance}
