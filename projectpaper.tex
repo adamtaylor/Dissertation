@@ -65,8 +65,8 @@ SQL injection attacks revolve around the attacker ``trying to exploit the data p
 SQL injection attacks “allow attackers to create, read, update, or delete any arbitrary data available to the application. In the worst case scenario, these flaws allow an attacker to completely compromise the application and the underlying systems, even bypassing deeply nested firewalled environments.” \cite{OWASP:2007:Online} 
 
 \section{Related Work}
-There are a number of different approaches to vulnerability discovery and prevention.  Some of the discovery work involves static analysis of source code (white box) and some of the prevention work involves input filtering techniques that can be applied to web applications.
-Much of the automated vulnerability discovery work has been done by commercial companies, however, there are some free and/or open source implementations.
+There are a number of different approaches to vulnerability discovery and prevention.  The majority of the research into vulnerability discovery involves static analysis of source code (white box) and the vulnerability prevention work involves input filtering techniques that can be applied to web applications.
+Much of the automated vulnerability discovery research has been done by commercial companies, however, there are a limited number of free and/or open source implementations.
 
 \subsection{Static Analysis}
 Static analysis is a white box technique used to analyse source code for vulnerabilities.  The main limitation of static analysis tools is that they have to be rewritten for every different programming language and/or framework a web application can be written in, and so far, most of the work seems to have focussed only on PHP.  Furthermore, often they struggle to analyse dynamically included content, meaning the PHP analysis is incomplete.
