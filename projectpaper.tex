@@ -112,7 +112,7 @@ This is impractical because web applications can be written in many different la
 
 On the other hand, tools based on the idea of black box vulnerability scanning can be used on web applications implemented in any language because they pay no attention to the source code of the application.
 
-Consequently, the research and development of a black box, automated vulnerability scanning tool appears to be the best direction to take to ensure maximum web application coverage.  It is hoped that this ability to analyse web applications written in any language will be a large improvement over other static analysis tools.
+Consequently, the research and development of a black box, automated vulnerability scanning tool appears to be the best direction to take to ensure maximum web application coverage.  It is hoped that this ability to analyse web applications written in any language will be a big improvement over other static analysis tools.
 
 \section{Solution}
 
@@ -123,7 +123,7 @@ Figure~\ref{fig:overview} provides an architectural overview of Project Norris, 
 
 \begin{figure}[!ht]
     \begin{center}
-        \includegraphics[scale=0.5]{images/overview_component_diagram.pdf}    
+        \includegraphics[scale=0.4]{images/overview_component_diagram.pdf}    
     \end{center}
     \caption{Component Diagram of Project Norris}
     \label{fig:overview}
@@ -146,7 +146,7 @@ The reason to separate the back-end from the front-end of the web application is
 \subsubsection{Web GUI}
 The Web GUI, or the front-end of the Project Norris web application, is designed using the MVC architectural pattern.
 
-The various different views of the Web GUI are displayed to the users by the controllers retrieving any required data from any relevant models and then loading the relevant view and passing the data.
+The various different views of the Web GUI are displayed to the users by the controllers retrieving any required data from any relevant models and then loading the relevant view and passing in the data.
 
 Views are simply template files, possibly with place holders for data and simple logic for dynamic code, rendered inside a global template file, with data being passed in via controllers.
 
@@ -163,7 +163,7 @@ The activity diagram, Figure ~\ref{fig:queue}, represents this process.
 
 \begin{figure}[!ht]
     \begin{center}
-        \includegraphics[scale=0.7]{images/queue_activity_diagram.png}    
+        \includegraphics[scale=0.4]{images/queue_activity_diagram.png}    
     \end{center}
     \caption{Activity Diagram of Project Norris' Queue}
     \label{fig:queue}
@@ -185,22 +185,22 @@ There are three main tables used throughout the application:
 In essence, a Website has many PointsOfInterest and each PointOfInterest can have many Vulnerabilities.
 
 \subsubsection{Crawler/Parser}
-The crawler has been designed to use a Breadth First Search algorithm.  It is passed a base URL and it then finds all the links on that page and adds them to a queue.  It then proceeds to dequeue one URL at a time and and get all the links on that page and then put them on its queue (unless any of them have already been visited - it maintains a hash so it can quickly check whether or not a URL has been seen before).
+The crawler has been designed to use a Breadth First Search algorithm.  It is passed a base URL and it then finds all the links on that page and adds them to a queue.  It then proceeds to dequeue one URL at a time and get all the links on that page and then place them on its queue (unless any of them have already been visited - it maintains a hash so it can quickly check whether or not a URL has been seen before).
 
-The pages are parsed using regular expressions.  As well as looking for links it also looks for forms, which can be parsed to the Attacker.  Forms have been chosen as it is the obvious place where a [malicious] user can submit input to the application.  The URI of the page is also checked to see whether it contains a query string, if so, this is also added to the Queue for the Attacker as it suggests the possibility of a file inclusion/directory traversal vulnerability.
+The pages are parsed using regular expressions.  As well as looking for links it also looks for forms, which can be passed to the Attacker.  Forms have been chosen as it is the obvious place where a [malicious] user can submit input to the application.  The URI of the page is also checked to see whether it contains a query string, if so, this is also added to the Queue for the Attacker as it suggests the possibility of a file inclusion/directory traversal vulnerability, and possible SQLi vulnerabilities.
 
 The activity diagram, Figure \ref{fig:crawler}, shows how the crawler works.
 
 \begin{figure}[!ht]
     \begin{center}
-        \includegraphics[scale=0.5]{images/crawler_activity_diagram.pdf}    
+        \includegraphics[scale=0.4]{images/crawler_activity_diagram.pdf}    
     \end{center}
     \caption{Activity Diagram of Project Norris' Crawler}
     \label{fig:crawler}
 \end{figure}
 
 \subsubsection{Attacker}
-The attacking component receives a job from the Queue with an object representing a PointOfInterest (found by the Crawler), and then proceeds to input different attack vectors, submit the form (or request the new URI) and parse the HTTP Response Body or Header, sent from the server, to see whether or not the attack was successful.
+The attacking component receives a job from the Queue with an object representing a PointOfInterest (found by the Crawler), and then proceeds to input different attack vectors, submit the form (or request the new URI) and parse the HTTP Response Body or Header, sent from the server, to see whether the attack was successful.
 
 The attacking component is also responsible for storing data.  Every time it starts a job it adds information about the job into the database so in the GUI every point of possible vulnerability (PointOfInterest) is reportable. 
 
@@ -238,7 +238,7 @@ Data flows through Project Norris in the way illustrated in Figure ~\ref{fig:dat
 
 \begin{figure}[!ht]
     \begin{center}
-        \includegraphics[scale=0.7]{images/data_flow_diagram.png}    
+        \includegraphics[scale=0.5]{images/data_flow_diagram.png}    
     \end{center}
     \caption{Data Flow Diagram of Project Norris}
     \label{fig:dataflow}
@@ -253,9 +253,7 @@ Data flows through Project Norris in the way illustrated in Figure ~\ref{fig:dat
 So one Website can have many PointsOfInterest, and one PointOfInterest can have many Vulnerabilities.
 
 \subsubsection{Limitations}
-Project Norris is a web application and this may limit it’s usefulness to the average end user, having said that, it has been written as a “hosted solution”.
-
-Project Norris also suffers a limitation of not looking at every aspect of a website that may be vulnerable.  The focus is primarily on input forms, whereas cookies and query strings may also contain vulnerabilities.
+Project Norris suffers a limitation of not looking at every aspect of a website that may be vulnerable.  The focus is primarily on input forms, whereas cookies and query strings may also contain vulnerabilities.
 
 The detection of SQL Injection attacks is also limited by the fact that different web and SQL servers throw different errors on receipt of invalid SQL statements.  This means that the Attacker will have to be “trained” to understand what types of responses likely indicate an SQL Injection vulnerability, however this is likely to be imperfect.
 
