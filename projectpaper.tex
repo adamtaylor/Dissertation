@@ -52,17 +52,17 @@ Hypothetically, if the tool were fully complete, the purpose of the tool would b
 
 The motivation for the development of such a tool is the fact that it is prohibitively expensive to perform a manual vulnerability analysis of a web application, however, an automated tool can rapidly analyse a web application using several different attack methodologies much faster than a human.
 
-The Open Web Application Security Project (OWASP) maintain an annual list of the most prevalent vulnerabilities found in web applications. \cite{OWASP:2007:Online} The two vulnerabilities the algorithms and tool will be primarily addressing are Cross Site Scripting (XSS) and Injection Flaws, particularly SQL Injection (SQLi) flaws.
+The Open Web Application Security Project (OWASP) maintain an annual list of the most prevalent vulnerabilities found in web applications \cite{OWASP:2007:Online}. The two vulnerabilities the algorithms and tool will be primarily addressing are Cross Site Scripting (XSS) and Injection Flaws, particularly SQL Injection (SQLi) flaws.
 
-Almost half of all the vulnerabilities found in web applications were either XSS vulnerabilities or Injection Flaws, which is why these two vulnerabilities are the primary focus of this research. \cite{OWASP:2007:Online}
+Almost half of all the vulnerabilities found in web applications were either XSS vulnerabilities or Injection Flaws, which is why these two vulnerabilities are the primary focus of this research \cite{OWASP:2007:Online}.
 
-XSS vulnerabilities ``allows an attacker to manipulate parts of a Web page... By injecting malicious scripting code" \cite{Holz2006} which according to a report by CERT allows an attacker to ``run malicious code in a users browser with the privileges of a legitimate script originating from the legitimate web server". \cite{Rafail:2001:Online}
+XSS vulnerabilities ``allows an attacker to manipulate parts of a Web page... By injecting malicious scripting code" \cite{Holz2006} which according to a report by CERT allows an attacker to ``run malicious code in a users browser with the privileges of a legitimate script originating from the legitimate web server" \cite{Rafail:2001:Online}.
 
-Vulnerabilities from XSS attacks include stealing the user's cookies and hijacking their session and/or account, connecting users to malicious servers of the attacker's choice or performing other malicious operations on the user's machine under the guise of the vulnerable site. \cite{Lee:2002:Online}
+Vulnerabilities from XSS attacks include stealing the user's cookies and hijacking their session and/or account, connecting users to malicious servers of the attacker's choice or performing other malicious operations on the user's machine under the guise of the vulnerable site \cite{Lee:2002:Online}.
 
-SQL injection attacks revolve around the attacker ``trying to exploit the data provider at the backend...leading to information disclosure". \cite{Holz2006}
+SQL injection attacks revolve around the attacker ``trying to exploit the data provider at the backend...leading to information disclosure" \cite{Holz2006}.
 
-SQL injection attacks “allow attackers to create, read, update, or delete any arbitrary data available to the application. In the worst case scenario, these flaws allow an attacker to completely compromise the application and the underlying systems, even bypassing deeply nested firewalled environments.” \cite{OWASP:2007:Online} 
+SQL injection attacks “allow attackers to create, read, update, or delete any arbitrary data available to the application. In the worst case scenario, these flaws allow an attacker to completely compromise the application and the underlying systems, even bypassing deeply nested firewalled environments” \cite{OWASP:2007:Online}. 
 
 \section{Related Work}
 There are a number of different approaches to vulnerability discovery and prevention.  The majority of the research into vulnerability discovery involves static analysis of source code (white box) and the vulnerability prevention work involves input filtering techniques that can be applied to web applications.
@@ -71,22 +71,22 @@ Much of the automated vulnerability discovery research has been done by commerci
 \subsection{Static Analysis}
 Static analysis is a white box technique used to analyse source code for vulnerabilities.  The main limitation of static analysis tools is that they have to be rewritten for every different programming language and/or framework a web application can be written in, and so far, most of the work seems to have focussed only on PHP.  Furthermore, often they struggle to analyse dynamically included content, meaning the PHP analysis is incomplete.
 
-Wasserman and Su worked on static analysis to detect XSS vulnerabilities using a mixture of tainted information flow and  string analysis and were able to provide effective checking algorithms. This research suffered the limitation of being applicable to PHP code only.  \cite{Wassermann2008}
+Wasserman and Su worked on static analysis to detect XSS vulnerabilities using a mixture of tainted information flow and  string analysis and were able to provide effective checking algorithms. This research suffered the limitation of being applicable to PHP code only \cite{Wassermann2008}.
 
-Wasserman and Su also worked on a static analysis tool to detect SQLi vulnerabilities.  They constructed a grammar based algorithm which tracks the effects of string operations and checks query construction to see whether users can directly or indirectly influence the query construction.   They then check if the users’ input is sufficiently  isolated from the query construction that it avoids SQLi vulnerabilities. Again this research only focused on PHP code. \cite{Wassermann2007}
+Wasserman and Su also worked on a static analysis tool to detect SQLi vulnerabilities.  They constructed a grammar based algorithm which tracks the effects of string operations and checks query construction to see whether users can directly or indirectly influence the query construction.   They then check if the users’ input is sufficiently  isolated from the query construction that it avoids SQLi vulnerabilities. Again this research only focused on PHP code \cite{Wassermann2007}.
 
-Jovanovic, Kruegel and  Kirda created an open source tool - Pixy - for static analysis of PHP applications to detect XSS vulnerabilities.  The tool used a “flow sensitive, interprocedural, and context sensitive analysis for PHP” to detect vulnerabilities. \cite{Jovanovic2006}  Pixy is hampered by its inability to scan included PHP files, leading to the authors admitting a number of false-positives being returned by the tool.  Also Pixy does not deal with the object-orientated features of PHP, instead they assume that object member variables are safe, which may not be the case.
+Jovanovic, Kruegel and  Kirda created an open source tool - Pixy - for static analysis of PHP applications to detect XSS vulnerabilities.  The tool used a “flow sensitive, interprocedural, and context sensitive analysis for PHP” to detect vulnerabilities \cite{Jovanovic2006}.  Pixy is hampered by its inability to scan included PHP files, leading to the authors admitting a number of false-positives being returned by the tool.  Also Pixy does not deal with the object-orientated features of PHP, instead they assume that object member variables are safe, which may not be the case.
 
-Huang et al. created a “lattice-based static analysis algorithm, derived from type systems and typestate”.  They also created a tool - WebSSARI - to analyse PHP source code for XSS and SQLi vulnerabilities. \cite{Huang2004}
+Huang et al. created a “lattice-based static analysis algorithm, derived from type systems and typestate”.  They also created a tool - WebSSARI - to analyse PHP source code for XSS and SQLi vulnerabilities \cite{Huang2004}.
 
 \subsection{Input Filtering}
 Input filtering research has been undertaken by developing intermediary proxies that can filter out data before it reaches, for example, a user or a database.
 
-Liu et al. developed  a proxy-tool, called SQLProb, to prevent SQLi attacks.  SQLProb sits between the front-end web servers and the back-end databases and uses genetic algorithms to dynamically detect SQLi attacks and block them from reaching the databases. \cite{Liu2009}
+Liu et al. developed  a proxy-tool, called SQLProb, to prevent SQLi attacks.  SQLProb sits between the front-end web servers and the back-end databases and uses genetic algorithms to dynamically detect SQLi attacks and block them from reaching the databases \cite{Liu2009}.
 
-SQLProb works in a similar manner to a web application firewall (WAF) and is quite a useful additional layer of security for a web application.  There are a number of other open-source WAFs such as: mod\_security for the Apache web server \cite{ModSecurity:2010:Online} and WebKnight for the IIS web server. \cite{WebKnight:2010:Online}  There are also many commercial WAFs available.
+SQLProb works in a similar manner to a web application firewall (WAF) and is quite a useful additional layer of security for a web application.  There are a number of other open-source WAFs such as: mod\_security for the Apache web server \cite{ModSecurity:2010:Online} and WebKnight for the IIS web server \cite{WebKnight:2010:Online}.  There are also many commercial WAFs available.
 
-Kirda et al. developed a proxy tool - Noxes - for end-users to sit between  web applications and the users’ browser to mitigate the effect of XSS vulnerabilities on end-users.  Noxes can be thought of as a personal web firewall for end-users. \cite{Kirda2006} Noxes is similar to the FireFox plugin NoScript \cite{NoScript:2010:Online} and suffers the same limitations in that it is extremely invasive to have to block or allow every single request from every new URI.  Noxes plays no role in discovering vulnerabilities in web applications, it is purely for protecting end users.
+Kirda et al. developed a proxy tool - Noxes - for end-users to sit between  web applications and the users’ browser to mitigate the effect of XSS vulnerabilities on end-users.  Noxes can be thought of as a personal web firewall for end-users \cite{Kirda2006}. Noxes is similar to the FireFox plugin NoScript \cite{NoScript:2010:Online} and suffers the same limitations in that it is extremely invasive to have to block or allow every single request from every new URI.  Noxes plays no role in discovering vulnerabilities in web applications, it is purely for protecting end users.
 
 \subsection{Automated Black Box Vulnerability Discovery}
 Automated black box vulnerability discovery tools look at a web application from a [malicious] user’s perspective, i.e. there is no source code analysis involved, and only look at the front-end of the web application.  Much of the research, and the tools developed, has been undertaken by commercial organisations.
@@ -95,13 +95,13 @@ WhiteHatSecurity have a commercial scanning tool named Sentinal \cite{WhiteHatSe
 
 An open-source automated tool was prototyped by the Secure Systems Lab at the Technical University of Vienna - SecuBat, consisting of a multi-threaded crawling, attack and analysis components.   
 
-By crawling 25,064 pages they were able to ascertain that 6.63\% were vulnerable to SQL Injection attacks and that 5.14\% were vulnerable to XSS attacks. \cite{Kals2006}
+By crawling 25,064 pages they were able to ascertain that 6.63\% were vulnerable to SQL Injection attacks and that 5.14\% were vulnerable to XSS attacks \cite{Kals2006}.
 
-Other semi-automated web application scanning tools include CAL9000 \cite{Loomis:2009:Online} a browser based web application security toolkit developed by OWASP to improve certain areas of web application testing procedures. \cite{Grossman2007}
+Other semi-automated web application scanning tools include CAL9000 \cite{Loomis:2009:Online} a browser based web application security toolkit developed by OWASP to improve certain areas of web application testing procedures \cite{Grossman2007}.
 
-Nikto is another tool which automatically looks for pre-defined vulnerabilities in specific web applications, including XSS and SQL Injection but is unable to automatically detect unknown vulnerabilities or to look for general classes of vulnerabilities. \cite{Nikto:2009:Online} 
+Nikto is another tool which automatically looks for pre-defined vulnerabilities in specific web applications, including XSS and SQL Injection but is unable to automatically detect unknown vulnerabilities or to look for general classes of vulnerabilities \cite{Nikto:2009:Online}.
 
-Nessus is a similar tool to Nikito and again can find pre-defined vulnerabilities but not general classes of vulnerabilities. \cite{Nessus:2010:Online}
+Nessus is a similar tool to Nikito and again can find pre-defined vulnerabilities but not general classes of vulnerabilities \cite{Nessus:2010:Online}.
 
 Nikto and Nessus are good at finding specific exploits that have already been exposed, for example a specific SQLi vulnerability in a specific version of an open source blogging platform but neither are capable of automatically detecting XSS or SQLi vulnerabilities in general.
 
@@ -283,7 +283,7 @@ end
 This algorithm is primarily used for detecting XSS vulnerabilities but an even simpler version that inputs only one single-quote - ' - will be used to detect SQLi vulnerabilities.
 
 \subsubsection{Fuzzy Brute Forcing}
-Fuzzy Brute Forcing dynamically generates potentially malicious input by generating a large amount of random data. \cite{Sutton2007}
+Fuzzy Brute Forcing dynamically generates potentially malicious input by generating a large amount of random data \cite{Sutton2007}.
 
 The pseudo-code for the algorithm is along the following lines:
 
@@ -294,7 +294,7 @@ def FuzzyBruteForce( PointOfInterest )
 	}
 end
 \end{lstlisting}
-This algorithm will be used to look at a different vulnerability: directory traversal vulnerabilities. Directory traversal vulnerabilities manifest themselves as the ability to view arbitrary files from the web server, in the user's web browser. \cite{OWASP:2007:Online}
+This algorithm will be used to look at a different vulnerability: directory traversal vulnerabilities. Directory traversal vulnerabilities manifest themselves as the ability to view arbitrary files from the web server, in the user's web browser \cite{OWASP:2007:Online}.
 
 \subsection{Web GUI Implementation}
 The GUI is a simple web application that allows a user to add or delete websites, to initiate a new scan of a website (which means to place the URL onto the job queue for the crawler and attacker) and to view reports.  A screenshot can be seen in Figure ~\ref{fig:gui}.
@@ -381,7 +381,7 @@ The project has a number of system tests, implemented using the Test::More modul
 \section{Results}
 
 \subsection{Primary Results}
-The primary results where taking against a scan of the Damn Vulnerable Web Application (DVWA) an open source, PHP web application for security research and learning. \cite{DVWA:2010:Online}
+The primary results where taking against a scan of the Damn Vulnerable Web Application (DVWA) an open source, PHP web application for security research and learning \cite{DVWA:2010:Online}.
 
 \begin{center}
     \begin{table}
@@ -415,7 +415,7 @@ It is important to note that while false positives were found, all the vulnerabi
 \subsection{Secondary Results}
 After testing the tool against DVWA it was then sent out `into the wild' and tested against various security scanner vendor's test web applications.  Again these are deliberately insecure applications, which are a good test of the accuracy of the tool.  An overview of the results is presented in Table \ref{tab:secondary_results} followed by more detailed results for each individual application.
 
-The evaluation was based on unpublished research, comparing various commercial scanners, against the various test applications. \cite{Suto2010}
+The evaluation was based on unpublished research, comparing various commercial scanners, against the various test applications \cite{Suto2010}.
 
 \begin{center}
     \begin{table}
@@ -520,7 +520,7 @@ The primary evaluation of the tool and hence, the algorithms, has been against a
 The modifications made were to remove the need to login as at present the Crawler is unable to login and follow pages behind authorisation protection.
 
 \subsection{Comparison}
-Comparing my tool to experimental research, it is clear that some of the commercial tools are far superior. In fact, Project Norris is worse than all the other tools tested to a varying degree. \cite{Suto2010}
+Comparing my tool to experimental research, it is clear that some of the commercial tools are far superior. In fact, Project Norris is worse than all the other tools tested to a varying degree \cite{Suto2010}.
 
 However, some reasons can be given for the relative poor performance in the wild. Regarding XSS vulnerabilities, a common attack vector is:
 
