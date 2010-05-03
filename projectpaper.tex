@@ -294,7 +294,7 @@ def FuzzyBruteForce( PointOfInterest )
 	}
 end
 \end{lstlisting}
-This algorithm will be used to look at a different vulnerability: directory traversal vulnerabilities. Directory traversal vulnerabilities are where it is possible to display files on the server, in the browser that are outside of the normal web application files.  For example, one way of displaying pages is to pass a file name to a script, which then loads the file.  By passing a specially crafted file name, it may be possible to display files that are not intended for viewing (such as system or password files). % TODO reference
+This algorithm will be used to look at a different vulnerability: directory traversal vulnerabilities. Directory traversal vulnerabilities manifest themselves as the ability to view arbitrary files from the web server, in the user's web browser. \cite{OWASP:2007:Online}
 
 \subsection{Web GUI Implementation}
 The GUI is a simple web application that allows a user to add or delete websites, to initiate a new scan of a website (which means to place the URL onto the job queue for the crawler and attacker) and to view reports.  A screenshot can be seen in Figure ~\ref{fig:gui}.
