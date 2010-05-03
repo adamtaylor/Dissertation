@@ -613,13 +613,15 @@ This is because there are likely to be more concurrent jobs for the attacking co
 
 \section{Conclusions}
 
-Current web application vulnerability detection techniques mostly involve static code analysis and, generally, this is limited to applications written in the PHP language.
+Current web application vulnerability detection techniques mostly involve static code analysis and, generally, this is limited to applications written in PHP.
 
 Project Norris can be used to find vulnerabilities in web applications written in any language; it is a black box vulnerability scanner. 
 
-Due to the designed architecture, Project Norris reports vulnerabilities as soon as it finds them, meaning it can be effectively used with web applications of any size.
+Due to the designed architecture, Project Norris reports vulnerabilities as soon as it finds them, meaning it can be effectively used with web applications of any size.  By launching multiple instances of the attacking or crawling components, the tool can effectively scale up to any size.
 
-It is an effective aide in the hunt for web application vulnerabilities and can crawl, parse and attack a website far quicker than a manual scan can.
+The advanced objectives of the project were met: having a usable visual interface, with digestible reports and the ability to crawl applications of arbitrary complexity, written in any language.
+
+While the vulnerability detection is not perfect, Project Norris is an effective aide in the hunt for web application vulnerabilities and can crawl, parse and attack a website far quicker than a manual tester can.
 
 \bibliography{webappsec}
 
