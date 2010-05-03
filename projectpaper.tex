@@ -543,11 +543,9 @@ Another area of improvement would be to improve the crawler by allowing the user
 One strong positive of the tool, compared to other academic research, is the fact that it can be used against web applications of any type, written in any language, and it will do its best to uncover vulnerabilities in that application.  This is possible due to its `black box' nature.
 
 Furthermore, while it currently lags behind commercial tools, one must consider the fact that they are precisely that: commercial tools.  Many of these are state-of-the-art vulnerability detection and analysis tools, developed by commercial organisations, with much larger research and development resources.  With that in mind, Project Norris can be considered as a reasonable first attempt at developing a tool and algorithms.
-% TODO more analysis
 
 \subsection{Performance}
-The Crawler of Project Norris was timed when crawling web applications of various sizes to see roughly how well it performs.  See Figure ~\ref{fig:performance}.
-The sites crawled contained ~100, ~1000 and ~5000 pages respectively.  The time taken to crawl increases with the number of pages crawled.
+The Crawler of Project Norris was timed when crawling web applications of various sizes to see roughly how well it performs.  See Figure ~\ref{fig:performance}.  The sites crawled contained roughly 100, 1000 and 5000 pages respectively.  The time taken to crawl increases with the number of pages crawled.
 
 The pages crawled per second for each site can be seen in Table ~\ref{table:performance}.
 
@@ -578,7 +576,7 @@ It's hard to draw any useful conclusions from this data as there are many factor
     \label{fig:performance}
 \end{figure}
 
-Scalability was an important design issue when designing and building Project Norris.  The following is a performance analysis of the attacking component, which can scale up.
+Scalability was an important design issue when designing and building Project Norris.  The attacking component, and overall architecture of the system, was designed in such a way that it would `scale up'.
 
 \begin{center}
     \begin{table}
@@ -600,11 +598,9 @@ Scalability was an important design issue when designing and building Project No
     \end{table}
 \end{center}
 
-As can be seen, in Table ~\ref{table:scalability}, when launching more instances of the attacking component, the total time taken to perform the attacks decreases.  However, this isn't the best representation of the scalability of the application.  In fact, the application is more suited to performing multiple vulnerability analysis runs, by launching multiple instances of the crawling component, as well as the attacking component.  
+As can be seen, in Table ~\ref{table:scalability} and Figure \ref{fig:performance2}, when launching more instances of the attacking component, the total time taken to perform the attacks decreases.  However, this isn't the best representation of the scalability of the application.  In fact, the application is more suited to performing multiple vulnerability analysis runs, by launching multiple instances of the crawling component, as well as the attacking component.  
 
 This is because there are likely to be more concurrent jobs for the attacking components by performing multiple scans, rather than from scanning one site and running multiple attacking components.  Crawling one site, large or small, will not necessarily result in a large succession of jobs for the attacker being generated, and the extra attacking components may be sitting idle, and therefore not demonstrating the scalability of the system.
-
-Figure \ref{fig:performance2} shows the scalability data in an easier to digest manner.
 
 \begin{figure}[!ht]
     \begin{center}
@@ -619,9 +615,9 @@ Figure \ref{fig:performance2} shows the scalability data in an easier to digest 
 
 Current web application vulnerability detection techniques mostly involve static code analysis and, generally, this is limited to applications written in the PHP language.
 
-Norris can be used to find vulnerabilities in web applications written in any language; it is a black box vulnerability scanner. 
+Project Norris can be used to find vulnerabilities in web applications written in any language; it is a black box vulnerability scanner. 
 
-Due to the designed architecture, Norris reports vulnerabilities as soon as it finds them, meaning it can be effectively used with web applications of any size.
+Due to the designed architecture, Project Norris reports vulnerabilities as soon as it finds them, meaning it can be effectively used with web applications of any size.
 
 It is an effective aide in the hunt for web application vulnerabilities and can crawl, parse and attack a website far quicker than a manual scan can.
 
