@@ -207,7 +207,7 @@ The attacking component is also responsible for storing data.  Every time it sta
 For any successful attacks a vulnerability is stored which is associated with a specific PointOfInterest (which is in turn associated with a Website).
 
 \subsubsection{Workflow}
-The workflow between the various components is demonstrated in the sequence diagram (Figure ~\ref{fig:workflow}).
+The workflow between the various components is demonstrated in the sequence diagram (Figure ~\ref{fig:workflow}) and is recapped in the implementation discussion.
 
 \begin{figure}[!ht]
     \begin{center}
@@ -216,22 +216,6 @@ The workflow between the various components is demonstrated in the sequence diag
     \caption{Sequence Diagram of Project Norris}
     \label{fig:workflow}
 \end{figure}
-
-% TODO this following section is a bit repeated
-
-When a user first visits Project Norris in a web browser, they are presented with an opportunity to add a URL to the system.  This then allows them to scan the URL/domain and later, view reports of vulnerabilities found.  If they choose to scan the URL the Web GUI then places the URL onto the Queue.
-
-There are two worker scripts, one for the Crawler/Parser and one for the Attacker, which are continually polling the Queue for jobs.
-
-As soon as the Crawler sees that there is a job available (i.e. the URL just placed onto the Queue by the Web GUI) a cycle kicks in where the Crawler takes the URL and crawls the whole site finding every page on the domain.  It maintains it’s own internal queue of the URLs on the domain, to ensure it only processes new URLs.
-
-It enters a loop where it enqueues every unseen link on a page into the queue and looks for any PointsOfInterest (i.e. forms or URIs that contain a query string) on the page, which if it finds, inserts as a job on the Queue for the Attacker, then it dequeues the next URL to look at until there are no more pages on the domain to crawl.
-
-When it has finished crawling and parsing the whole website it goes back to watching the Queue for new jobs.
-
-The attacker takes a form off the Queue and then proceeds to attack the form and analyse the response from the web server.  Should a vulnerability be detected, it is then inserted into the database for the Web GUI to generate reports to the user.  It's also important to note that the Attacker starts working \emph{as soon as} the Crawler/Parser finds a PointOfInterest and adds it to the Queue.  This allows for asynchronous crawling/attacking which helps to speed up the vulnerability discovery process.
-
-The user is then able to generate reports in the Web GUI, which are created using the data in the database collected by the Attacker.
 
 \subsubsection{Data Flow}
 Data flows through Project Norris in the way illustrated in Figure ~\ref{fig:dataflow}.
@@ -536,7 +520,7 @@ The primary evaluation of the tool and hence, the algorithms, has been against a
 The modifications made were to remove the need to login as at present the Crawler is unable to login and follow pages behind authorisation protection.
 
 \subsection{Comparison}
-Comparing my tool to experimental research, it is clear that some of the commercial tools are far superior. It would appear at first glance, that Project Norris is worse than all the other tools tested, and this is true. \cite{Suto2010}
+Comparing my tool to experimental research, it is clear that some of the commercial tools are far superior. In fact, Project Norris is worse than all the other tools tested to a varying degree. \cite{Suto2010}
 
 However, some reasons can be given for the relative poor performance in the wild. Regarding XSS vulnerabilities, a common attack vector is:
 
