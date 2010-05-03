@@ -29,13 +29,13 @@
     Consequently, security vulnerabilities of various severity are prevalent in many web applications.  Manually enumerating every possible area of vulnerability in a web application is a time consuming activity and this is where automated vulnerability detection tools can be of benefit.
     
     {\bf Aims:}
-    The aim of this project is to develop and evaluate algorithms to automatically detect vulnerabilities in web applications.  Secondly, a web based tool, will be created to demonstrate the usefulness of the algorithms. 
+    The aim of this project is to develop and evaluate algorithms to automatically detect vulnerabilities in web applications.  Secondly, a web based tool will be created to demonstrate the usefulness of the algorithms. 
     
     {\bf Method:}
-    Use the dynamic scripting language Perl, to prototype and tweak vulnerability detection algorithms, and create a web-based interface and proof-of-concept tool, demonstrating the algorithms.
+    Use the dynamic scripting language Perl to prototype and tweak vulnerability detection algorithms, and create a web-based interface and proof-of-concept tool, demonstrating the algorithms.
     
     {\bf Results:}
-    Results indicate that while the algorithms are less successful than those employed by commercially developed they are capable of automatically detecting simple vulnerabilities in web applications.  Furthermore, the tool developed adequately demonstrates the algorithms, while being usable and achieving secondary goals of scalability and performance.
+    Results indicate that while the algorithms are less successful than those employed by commercially developed tools they are capable of automatically detecting simple vulnerabilities in web applications.  Furthermore, the tool developed adequately demonstrates the algorithms, while being usable and achieving secondary goals of scalability and performance.
     
     {\bf Conclusions:}
     Project Norris (the tool developed) works well, and the results show the relative success of the algorithms developed.  Subsequent work could be done to further develop and improve the algorithms now that a solid foundation is in place.
@@ -69,11 +69,11 @@ There are a number of different approaches to vulnerability discovery and preven
 Much of the automated vulnerability discovery research has been done by commercial companies, however, there are a limited number of free and/or open source implementations.
 
 \subsection{Static Analysis}
-Static analysis is a white box technique used to analyse source code for vulnerabilities.  The main limitation of static analysis tools is that they have to be rewritten for every different programming language and/or framework a web application can be written in, and so far, most of the work seems to have focussed only on PHP Hypertext Preprocessor (PHP).  Furthermore, often they struggle to analyse dynamically included content, meaning the PHP analysis is incomplete.
+Static analysis is a white box technique used to analyse source code for vulnerabilities.  The main limitation of static analysis tools is that they have to be rewritten for every different programming language and/or framework a web application can be written in, and so far, most of the work has focussed only on PHP Hypertext Preprocessor (PHP).  Furthermore, often they struggle to analyse dynamically included content, meaning the PHP analysis is incomplete.
 
-Wasserman and Su worked on static analysis to detect XSS vulnerabilities using a mixture of tainted information flow and  string analysis and were able to provide effective checking algorithms. This research suffered the limitation of being applicable to PHP code only \cite{Wassermann2008}.
+Wassermann and Su worked on static analysis to detect XSS vulnerabilities using a mixture of tainted information flow and  string analysis and were able to provide effective checking algorithms. This research suffered the limitation of being applicable to PHP code only \cite{Wassermann2008}.
 
-Wasserman and Su also worked on a static analysis tool to detect SQLi vulnerabilities.  They constructed a grammar based algorithm which tracks the effects of string operations and checks query construction to see whether users can directly or indirectly influence the query construction.   They then check if the users’ input is sufficiently  isolated from the query construction that it avoids SQLi vulnerabilities. Again this research only focused on PHP code \cite{Wassermann2007}.
+Wassermann and Su also worked on a static analysis tool to detect SQLi vulnerabilities.  They constructed a grammar based algorithm which tracks the effects of string operations and checks query construction to see whether users can directly or indirectly influence the query construction.   They then check if the users’ input is sufficiently  isolated from the query construction that it avoids SQLi vulnerabilities. Again this research only focused on PHP code \cite{Wassermann2007}.
 
 Jovanovic, Kruegel and  Kirda created an open source tool - Pixy - for static analysis of PHP applications to detect XSS vulnerabilities.  The tool used a “flow sensitive, interprocedural, and context sensitive analysis for PHP” to detect vulnerabilities \cite{Jovanovic2006}.  Pixy is hampered by its inability to scan included PHP files, leading to the authors admitting a number of false-positives being returned by the tool.  Also Pixy does not deal with the object-orientated features of PHP, instead they assume that object member variables are safe, which may not be the case.
 
@@ -86,7 +86,7 @@ Liu et al. developed  a proxy-tool, called SQLProb, to prevent SQLi attacks.  SQ
 
 SQLProb works in a similar manner to a web application firewall (WAF) and is quite a useful additional layer of security for a web application.  There are a number of other open-source WAFs such as: mod\_security for the Apache web server \cite{ModSecurity:2010:Online} and WebKnight for the IIS web server \cite{WebKnight:2010:Online}.  There are also many commercial WAFs available.
 
-Kirda et al. developed a proxy tool - Noxes - for end-users to sit between  web applications and the users’ browser to mitigate the effect of XSS vulnerabilities on end-users.  Noxes can be thought of as a personal web firewall for end-users \cite{Kirda2006}. Noxes is similar to the FireFox plugin NoScript \cite{NoScript:2010:Online} and suffers the same limitations in that it is extremely invasive to have to block or allow every single request from every new URI.  Noxes plays no role in discovering vulnerabilities in web applications, it is purely for protecting end users.
+Kirda et al. developed a proxy tool - Noxes - for end-users to sit between  web applications and the users’ browser to mitigate the effect of XSS vulnerabilities on end-users.  Noxes can be thought of as a personal web firewall for end-users \cite{Kirda2006}. Noxes is similar to the FireFox plugin NoScript \cite{NoScript:2010:Online} and suffers the same limitations in that it is extremely invasive to have to block or allow every single request from every new URI.  Noxes plays no role in discovering vulnerabilities in web applications - it is purely for protecting end users.
 
 \subsection{Automated Black Box Vulnerability Discovery}
 Automated black box vulnerability discovery tools look at a web application from a [malicious] user’s perspective, i.e. there is no source code analysis involved, and only look at the front-end of the web application.  Much of the research, and the tools developed, has been undertaken by commercial organisations.
@@ -129,7 +129,7 @@ Figure~\ref{fig:overview} provides an architectural overview of Project Norris, 
     \label{fig:overview}
 \end{figure}
 
-Project Norris is a web-based application that allows a user to input a URL of a website, and then after crawling, parsing, and attacking the website, displays a report to the user of any security vulnerabilities found in the website by Project Norris.
+Project Norris is a web-based application that allows a user to input a URL of a website, and then, after crawling, parsing, and attacking the website, displays a report to the user of any security vulnerabilities found in the website by Project Norris.
 
 The design of Project Norris has been broken down into a number of core components.  The user interface of Project Norris is handled by an model-view-controller (MVC) based web application.  There are then two main back-end components which do the heavy processing for the application.  These are the Attacker component and the Crawler component.
 
@@ -338,9 +338,7 @@ It also performs some additional checks before following a URL: it makes sure th
 While on a page it also looks for PointsOfInterest that can be passed to the Attacker.  If it finds a form on the page, it inserts a new job on the Queue with a reference to the form it found for the Attacker to perform XSS and SQLi attacks.  If it finds a URI with a query string, such as, http://example.com/index.php?page=../home.php, it inserts a new job on the Queue with a reference to the URI for the Attacker to perform a directory traversal attack and a SQLi attack.
 
 \subsection{Attacker}
-The Attacker component first checks to see whether it has received a URI or a Form PointOfInterest and stores the PointOfInterest in the Database for the GUI.  If it is a URI PointOfInterest it executes the directory traversal, fuzzy-based algorithm.  This works by attempting to access $<$\$input\_uri$>$../etc/passwd, then $<$\$input\_uri$>$../../etc/passwd and so on and looking, via regular expression, for the word `root' (as in the root user accout) in the HTTP Response Body returned from the server.  If it is found a Vulnerability is stored in the database for that particular PointOfInterest.  It also, tries the SQLi algorithm, explained shortly.
-
-This can return false positives and only works on unix based servers.
+The Attacker component first checks to see whether it has received a URI or a Form PointOfInterest and stores the PointOfInterest in the Database for the GUI.  If it is a URI PointOfInterest it executes the directory traversal, fuzzy-based algorithm.  This works by attempting to access $<$\$input\_uri$>$../etc/passwd, then $<$\$input\_uri$>$../../etc/passwd and so on and looking, via regular expression, for the word `root' (as in the root user accout) in the HTTP Response Body returned from the server.  If it is found a Vulnerability is stored in the database for that particular PointOfInterest.  This can return false positives and only works on unix based servers.  It also, tries the SQLi algorithm, explained shortly.
 
 If it has been passed a Form PointofInterest from the Crawler it first executes the XSS algorithm and then the SQLi algorithm.  The XSS algorithm works by permeating through a list of predefined attack vectors. For each iteration through the list of vectors, the vector is set as the input for each field of the form, which is then submitted, and in the HTTP Response Body the attack vector is searched for, via regular expressions.  If it is found then it is assumed that the vector was successful and a Vulnerability is stored in the database for that PointOfInterest.
 
