@@ -35,7 +35,7 @@
     Use the dynamic scripting language Perl, to prototype and tweak vulnerability detection algorithms, and create a web-based interface and proof-of-concept tool, demonstrating the algorithms.
     
     {\bf Results:}
-    Results indicate that the algorithms developed are somewhat successful at automatically detecting vulnerabilities in web applications.  Furthermore, the tool developed adequately demonstrates the algorithms, while being usable and achieving secondary goals of scalability and performance.
+    Results indicate that while the algorithms are less successful than those employed by commercially developed they are capable of automatically detecting simple vulnerabilities in web applications.  Furthermore, the tool developed adequately demonstrates the algorithms, while being usable and achieving secondary goals of scalability and performance.
     
     {\bf Conclusions:}
     Project Norris (the tool developed) works well, and the results show the relative success of the algorithms developed.  Subsequent work could be done to further develop and improve the algorithms now that a solid foundation is in place.
@@ -69,7 +69,7 @@ There are a number of different approaches to vulnerability discovery and preven
 Much of the automated vulnerability discovery research has been done by commercial companies, however, there are a limited number of free and/or open source implementations.
 
 \subsection{Static Analysis}
-Static analysis is a white box technique used to analyse source code for vulnerabilities.  The main limitation of static analysis tools is that they have to be rewritten for every different programming language and/or framework a web application can be written in, and so far, most of the work seems to have focussed only on PHP.  Furthermore, often they struggle to analyse dynamically included content, meaning the PHP analysis is incomplete.
+Static analysis is a white box technique used to analyse source code for vulnerabilities.  The main limitation of static analysis tools is that they have to be rewritten for every different programming language and/or framework a web application can be written in, and so far, most of the work seems to have focussed only on PHP Hypertext Preprocessor (PHP).  Furthermore, often they struggle to analyse dynamically included content, meaning the PHP analysis is incomplete.
 
 Wasserman and Su worked on static analysis to detect XSS vulnerabilities using a mixture of tainted information flow and  string analysis and were able to provide effective checking algorithms. This research suffered the limitation of being applicable to PHP code only \cite{Wassermann2008}.
 
@@ -413,7 +413,7 @@ This suggests a false positive ratio of 3:7 - we can be just over 50\% sure in t
 It is important to note that while false positives were found, all the vulnerabilities present, that the tool can detect, were also found.
 
 \subsection{Secondary Results}
-After testing the tool against DVWA it was then sent out `into the wild' and tested against various security scanner vendor's test web applications.  Again these are deliberately insecure applications, which are a good test of the accuracy of the tool.  An overview of the results is presented in Table \ref{tab:secondary_results} followed by more detailed results for each individual application.
+After testing the tool against DVWA it was then sent out `into the wild' and tested against various security scanner vendor's test web applications.  Again these are deliberately insecure applications, which are a good test of the accuracy of the tool.  An overview of the results is presented in Table \ref{tab:secondary_results} followed by more detailed results for each individual application: Tables \ref{tab:acunetix}, \ref{tab:acunetix2}, \ref{tab:zerowebappsec} and \ref{tab:testfire}.
 
 The evaluation was based on unpublished research, comparing various commercial scanners, against the various test applications \cite{Suto2010}.
 
@@ -460,6 +460,7 @@ The evaluation was based on unpublished research, comparing various commercial s
                 \hline
             \end{tabular}
         \end{center}
+        \label{tab:acunetix}
     \end{table}
 \end{center}
 
@@ -476,6 +477,7 @@ The evaluation was based on unpublished research, comparing various commercial s
                 \hline
             \end{tabular}
         \end{center}
+        \label{tab:acunetix2}
     \end{table}
 \end{center}
 
@@ -494,6 +496,7 @@ The evaluation was based on unpublished research, comparing various commercial s
                 \hline
             \end{tabular}
         \end{center}
+        \label{tab:zerowebappsec}
     \end{table}
 \end{center}
 
@@ -511,6 +514,7 @@ The evaluation was based on unpublished research, comparing various commercial s
                 \hline
             \end{tabular}
         \end{center}
+        \label{tab:testfire}
     \end{table}
 \end{center}
 
